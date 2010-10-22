@@ -8,34 +8,93 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
 
+
+
+* Abstract
+
+  This is a hands-on, practical workshop in getting started with literate programming (and beyond) with Emacs + org-mode + org-babel. We will touch briefly on the concepts of LP, organizing and manipulating information in org-mode, and dive right into using the uniquely powerful features provided by org-babel: writing documents in multiple programming languages and executing them without leaving your writing environment; outputting, processing, and formatting program output; publishing documents containing (or not) the source code, and the results and figures. This workshop is geared towards: students, researchers, programmers, and individuals who want a more streamlined workflow and more efficient information management methods, write programs with richer and more understandable documentation; anybody who is interested in Knuth's literate programming philosophy, and/or how to write "executable documents".
+
+* ideas from Eric + org-mode community
+
+
 * Intro
+
+** why should I care?
+
+*** I'm a student/researcher, how does this help me?
+
+    - example of student report with reference management and rapid movement of sections
+
+    - example of paper-in-progress with figures, tables, analysis code
+
+**** I'm a heavy LaTeX user, what's better about this?
+
+     you can always fallback to LaTeX if you want -- show example (o18?)
+
+*** I'm a programmer
+
+**** how is this different from verbose commenting?
+
+     the flow of thought is facilitated differently
+
+*** I'm a monkey, how does this help?
+
+    [[http://doc.norang.ca/org-mode.html][organize your life in plain text]]
+
 ** org-mode
-** org-babel
 
-* I use LaTeX -- why should I care?
+   do people care about history?
 
-you can always fallback to LaTeX if you want -- show o18 example
+** literate programming and org-babel
+
+*** intro to literate programming philosophy
+
+    spend no more than 1 minute
+
+*** unique powers of Babel
+
+**** whirlwind demo of babel
+     - show a raw completed file and export it nicely
 
 * guide novice users through setting up the org-babel environment
 
-** setting up emacs
-   - [[http://homepage.mac.com/zenitani/emacs-e.html][mac]], linux (cover deb/ubu), [[http://www.claremontmckenna.edu/math/alee/emacs/emacs.html][win]] ([[http://ftp.gnu.org/gnu/emacs/windows/][ftp-w32]]) versions
-   - version check for emacs/org
-   - provide VM image for people who want minimal fuss
-     - xubu or DSL?
-   - dot files
-   - gotchas like setenv/getenv
-** setting up orgmode
-   - orgmode feature rundown here?
-   - orgmode notifications? this is tangential
-   - *make sure pdflatex works!*
-** setting up org-babel
-** setting up babel languages
+** setting up
+in case people don't have git, or, to prevent build difficulties, provide some kind of package
+*** emacs proper
+    - [[http://homepage.mac.com/zenitani/emacs-e.html][mac]], linux (cover deb/ubu), [[http://www.claremontmckenna.edu/math/alee/emacs/emacs.html][win]] ([[http://ftp.gnu.org/gnu/emacs/windows/][ftp-w32]]) versions
+    - version check
+    - provide VM image for people who want minimal fuss
+      - xubu or DSL?
+    - dot files for novices
+    - gotchas like setenv/getenv, exec-path
+**** other packages here?
+     - *make sure pdflatex works!*
+     - ELPA
+     - iimage-mode
+       - better iimage-mode regex, provide in dotfile
+       - gotcha with image path for LaTeX output
+     - yasnippet?
+*** org proper
+    - version check
+    - git repo
+    - dot files providing common styling options
+    - go over common keybindings so people don't get confused like M-up M-down
+*** babel
+    - version check
+    - git repo
+    - built-in langauge support and enabling
+**** babel languages
+     - what el files needed? ruby-inf etc.
+     - enabling
 
-* evaluating code blocks within buffers
+** intro to orgmode
+   - quick feature rundown?
+
+* evaluating code blocks within a single buffer, in multiple languages
+
+  the fast way to becoming a polyglot
 
 ** how this is useful: write code that writes my document for me
-
 
 *** emacs users -- you might go to eshell first
 
@@ -102,6 +161,3 @@ clojure+incanter graphics
 
    - I want to include certain lines from a different file into my org file. how do I do that?
    - how large a file can org handle?
-
-* Eric's ideas
-
