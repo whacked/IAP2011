@@ -1,4 +1,4 @@
-#+TITLE:     IAP2011-proposal-org-babel.org
+#+TITLE:     Writing and running analysis in the middle of your paper with org-babel!
 #+AUTHOR:    natto
 #+EMAIL:     natto@natto-mbp.local
 #+DATE:      2010-10-21 Thu
@@ -8,26 +8,100 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
 
+* Intro
+** org-mode
+** org-babel
+
+* I use LaTeX -- why should I care?
+
+you can always fallback to LaTeX if you want -- show o18 example
 
 * guide novice users through setting up the org-babel environment
 
 ** setting up emacs
-   - mac, linux, win versions
-   - version check
+   - [[http://homepage.mac.com/zenitani/emacs-e.html][mac]], linux (cover deb/ubu), [[http://www.claremontmckenna.edu/math/alee/emacs/emacs.html][win]] ([[http://ftp.gnu.org/gnu/emacs/windows/][ftp-w32]]) versions
+   - version check for emacs/org
    - provide VM image for people who want minimal fuss
-   - provide dot files
+     - xubu or DSL?
+   - dot files
+   - gotchas like setenv/getenv
 ** setting up orgmode
    - orgmode feature rundown here?
+   - orgmode notifications? this is tangential
+   - *make sure pdflatex works!*
 ** setting up org-babel
 ** setting up babel languages
 
 * evaluating code blocks within buffers
 
+** how this is useful: write code that writes my document for me
+
+
+*** emacs users -- you might go to eshell first
+
+** demo -- "best tool for the job" in the same file
+
+*** emacs users -- you can use elisp
+=(dotimes (counter 10) (insert (format "trial %s: blah\n" counter)))=
+
+to be pedantic:
+#+begin_src emacs-lisp
+(dotimes (counter 10) (insert (format "trial %s: blah\n" counter)))
+#+end_src
+
+*** but you can just use whatever you know well
+
+**** shell script
+
+#+begin_src sh :results output
+for i in {1..10}; do echo image-`printf %03d "$i"`.png; done
+#+end_src
+
+**** haskell -- there's a bug in haskell output -- last line does not get printed, but it does get evaluated
+#+begin_src haskell :results output
+import System.Process
+show (take 10 [1..])
+runCommand "say hi there"
+#+end_src
+
+**** ruby, "pagination mockup"
+#+begin_src ruby :results output
+puts " < [[prev]] | [[next]] >"
+puts "=" * 20
+20.times do puts "#{(10+(rand 89))} hits | [[" + (0..1+(rand 2)).collect{('a'..'z').to_a.shuffle[0..4+(rand 5)].join}.join(" ") + "]]" end
+puts "=" * 20
+puts " < [[prev]] | [[next]] >"
+#+end_src
+
+**** clojure
+
+clojure+incanter graphics
+
+**** something that reads twitter
+
+**** more relevant example: subject stats with python
+
+
+** passing evaluation results to other code blocks
+
 * tangling files
 
 * publishing
+** LaTeX headers
+** publishing styles
 
 * advanced techniques
   - other export header options
-  - piping results across languages
+  - post evaluation hooks to format your output
+  - yasnippets
+  - org-specific: export to beamer
+
+* specific use-cases and questions. how do I...? etc.
+** how do i word-wrap?
+   - M-x visual-line-mode
+
+   - I want to include certain lines from a different file into my org file. how do I do that?
+   - how large a file can org handle?
+
+* Eric's ideas
 
