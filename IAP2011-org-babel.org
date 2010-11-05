@@ -60,6 +60,9 @@
 
 ** setting up
 in case people don't have git, or, to prevent build difficulties, provide some kind of package
+
+check if athena has it
+
 *** emacs proper
     - [[http://homepage.mac.com/zenitani/emacs-e.html][mac]], linux (cover deb/ubu), [[http://www.claremontmckenna.edu/math/alee/emacs/emacs.html][win]] ([[http://ftp.gnu.org/gnu/emacs/windows/][ftp-w32]]) versions
     - version check
@@ -74,6 +77,7 @@ in case people don't have git, or, to prevent build difficulties, provide some k
        - better iimage-mode regex, provide in dotfile
        - gotcha with image path for LaTeX output
      - yasnippet?
+     - undo-tree visualizer? undo is not intuitive
 *** org proper
     - version check
     - git repo
@@ -140,20 +144,88 @@ clojure+incanter graphics
 
 **** more relevant example: subject stats with python
 
+**** R "visual area" plots
+
+turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x11
 
 ** passing evaluation results to other code blocks
 
 * tangling files
 
+** single block tangle
+
+** mutliple files tangle
+
+** multiple blocks into single file
+
 * publishing
 ** LaTeX headers
+   - image captions
+   - overriding defaults
 ** publishing styles
 
 * advanced techniques
+  - export option template
   - other export header options
   - post evaluation hooks to format your output
+    - worth working on multilingual hook?
   - yasnippets
+    - overwrite default src snippet?
   - org-specific: export to beamer
+
+** how to run code across multiple blocks in the same buffer, at once?
+
+*** example
+
+    #+begin_src python
+    x = 1
+    #+end_src
+
+    #+begin_src python
+    print x
+    #+end_src
+
+    how to get 1?
+
+**** first attempt
+
+
+**** second
+
+
+**** second
+
+   aside of the :noweb directive I don't know if that is possible
+
+   problem with :noweb is that if you keep using noweb includes you might be including more code into a block than you actually want in the tangled output
+
+   the workaround if you really want to eval multiple blocks, in my knowledge, is to use :session. there's the added benefit that it's async (I think so). but side effect code is dangerous
+
+** how to convert my existing LaTeX to org?
+
+** how to convert my code to org?
+
+
+** tangle-based dev cycle? is this a good idea at all?
+
+
+* limitations & issues
+  - debugging
+  - sudo commands from source block
+    - ugly workaround: create a session and execute
+  - stderr output capture
+  - text indentation following a code block is messed up (it indents to match the line within the code block, treating the code line like a text line
+  - sometimes tangling causes a :PROPERTIES drawer to appear. reverting does not solve the problem. i have resorted to restarting emacs to stop it. not sure what causes it but today i got it to appear, seemingly after runnin a C-c ' on a non-src-block region, then tangle
+
+** other strange behavior and or bugs
+   - not-folding correctly --> revert
+   - insert PROPERTIES after tangle, no idea how/why this happens --> revert
+   - multiple tangle indentation issue -- solved in email list but doesn't look like integrated in upstream
+   - clear undo tree when start org-babel buffer or if you press undo you can clear the screen?
+     
+
+
+   
 
 * specific use-cases and questions. how do I...? etc.
 ** how do i word-wrap?
@@ -161,3 +233,14 @@ clojure+incanter graphics
 
    - I want to include certain lines from a different file into my org file. how do I do that?
    - how large a file can org handle?
+
+
+   - how to denote separate blocks and related blocks across several sections? i.e.
+     - section 1.
+       - some text
+       - code bit 1
+       - some text
+       - code bit 2
+       - some text
+       - code bit continuation of 2
+     this is easy to author, but what about execution? is session the way to go?
