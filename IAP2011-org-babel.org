@@ -8,16 +8,140 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
 
+This document is up-to-date as of 2010-12-24 16:22:12
+
+
+* TODO 
+
+Utilize some kind of macro to make sure the download links are correct
+
+- how the workshop is received and if there are any
+common themes in the user feedback. -- create a detailed feedback sheet
+
+bring a recorder to record questions. announce that it will be recorded but deleted after transcription
+
+what about the wiki? and stellar?
+
+** other stuff, check
+
+run through this with L/W/M setup + language environments + exercises... *exercises?*
+
+* common concerns
+
+why aren't more people using it?
+  - *learning curve* (RTFM is not going to get you new users!)
+  - no very good and very clear leader in hand-holding beginners
+
+org-mode (and emacs, for that matter) isn't for everybody, ...
+
+but for those --- blah blah selling point
+
+carsten dominik gave a talk on org-mode at google. it was over 1 hr long. point is org mode is complex. org-babel talk can take very long too
+
+* more examples
+
+check the org paper on executing multiple code blocks with single command? by chaining maybe?
+
+** our current work
+
+*** nipype coding
+
+    running nipype pipeline -- where computationally intensive things should be tangled
+
+*** paper in progress
+
+    inserting subject summaries & figures
+    aside: integration with gollum = org+git+wiki
+
+** using org-mode to learn a new programming language
+
+*** (semi) interactive tutorial
+
+    ruby koans example
+
+*** writing an interactive tutorial (or programming book)
+
+    show how Zed Shaw's "How To Write A LxTHW" is a perfect fit
+    http://sheddingbikes.com/posts/1288945508.html
+
+*** generating an interactive programming book a single command
+
+    lua tutorial
+
+* Current (and new) questionst to Eric and others
+
+- how to export the org paper?
+- how much of the paper is usable as public demo material?
+
 
 
 * Abstract
 
   This is a hands-on, practical workshop in getting started with literate programming (and beyond) with Emacs + org-mode + org-babel. We will touch briefly on the concepts of LP, organizing and manipulating information in org-mode, and dive right into using the uniquely powerful features provided by org-babel: writing documents in multiple programming languages and executing them without leaving your writing environment; outputting, processing, and formatting program output; publishing documents containing (or not) the source code, and the results and figures. This workshop is geared towards: students, researchers, programmers, and individuals who want a more streamlined workflow and more efficient information management methods, write programs with richer and more understandable documentation; anybody who is interested in Knuth's literate programming philosophy, and/or how to write "executable documents".
 
+** software versions used in this workshop (based on reference systems)
+   - emacs (win/mac/lin: 23.2.1, athena: 22.2.1)
+   - org-mode (7.4, all setups)
+   if you want to run versions as per the reference setup, use the VM
+
 * ideas from Eric + org-mode community
 
+** what's the difference between starter kits?
+
+technomancy's is the original
+https://github.com/technomancy/emacs-starter-kit
+
+notice that in eschulte's version, the .el files are mostly .org files
+
+
+** setup
+
+If you think you will have sufficient time, it may be worthwhile to have the audience install Org-mode locally and work through a couple of hands-on examples.
+
+** Eric's fork of the Emacs starter kit [1] to get people up and running.
+
+- It includes install instructions, and most importantly it bundles and
+configures all relevant Emacs packages.  I have installed it on a number
+of machines (all Linux and Mac, I have no windows experience) to the
+point where the process should be pretty smooth.  I would definitely
+recommend going through the install process yourself on a couple of
+fresh machines and getting to the point where you can easily run through
+your examples.
+
+** initial demo
+
+When I've introduced users to Org-mode I find that the first "wow" moment is generally when you've typed up a simple file (couple of headings, a list, a code block and a table, etc...) and export that file to both html (C-c C-e b) and to pdf (C-c C-e d).  Seeing the quick export to disparate backends tends to get peoples attention and start the "how can I apply this to my workflow" thought process.
+
+*** setup a "live update" machine with an iframe that keeps refreshing on an html page + pdf viewer to demonstrate export
+
+After that I'd recommend a quick general Org-mode introduction (see Worg for resources) and then I'll recommend a couple of resources for code block specific examples.
+
+1) Babel Paper by Dan, Carsten, Tom, Eric :: https://github.com/eschulte/babel-dev/raw/master/paper/babel.org
+
+2) scraps.org :: https://github.com/eschulte/babel-dev/raw/master/scraps.org
+
+3) Worg :: Finally there is the Babel introductory tutorial [4] on Worg
+     which hasn't been updated in months, but is our early attempt at a
+     comprehensive introduction to babel usage.  There is also a uses
+     page on Worg which provides examples of real-life applications
+     of Babel.
+http://orgmode.org/worg/org-contrib/babel/intro.php
+
+http://orgmode.org/worg/org-contrib/babel/uses.php
+
+
+** after you install the starter kit
+
+if you want to generate the exact same webpage you see on http://eschulte.github.com/emacs-starter-kit/,
+simply export it! (show export)
 
 * Intro
+
+will not know answers to all questions, but make sure:
+1. record
+2. find out answer
+3. reply asker + reply to class
+4. post onto *wiki*...
 
 ** why should I care?
 
@@ -37,10 +161,6 @@
 
      the flow of thought is facilitated differently
 
-*** I'm a monkey, how does this help?
-
-    [[http://doc.norang.ca/org-mode.html][organize your life in plain text]]
-
 ** org-mode
 
    do people care about history?
@@ -56,12 +176,185 @@
 **** whirlwind demo of babel
      - show a raw completed file and export it nicely
 
+**** hello world in 10 languages
+
+tie outputs from each block into the next
+
+***** C
+
+yes, this actually compiles and runs
+
+/somehow syntax highlighting isn't working unless i use lowercase 'c', but compilation requires it to be uppercase/
+
+
+1. C
+   #+begin_src c
+     #include <stdio.h>
+     int main(void) { printf("hello world!\n"); return 0; }
+   #+end_src
+
+2. python
+   #+begin_src python :results output
+     print "hello world!"
+   #+end_src
+
+3. ruby
+   #+begin_src ruby :results output
+     puts "hello world!"
+   #+end_src
+
+4. emacs-lisp ?
+   #+begin_src emacs-lisp
+     (format "hello world" )
+   #+end_src
+
+5. shell
+   #+begin_src sh
+     echo "hello world"
+   #+end_src
+
+6. perl
+   #+begin_src perl :results output
+     print "hello world"
+   #+end_src
+
+7. R
+   #+begin_src R
+     print("hello world")
+   #+end_src
+
+8. haskell
+   haskell bug
+
+   #+begin_src haskell
+     putStr "hello world"
+   #+end_src
+
+9. octave
+   #+begin_src octave :results output
+     disp('hello world')
+   #+end_src
+
+10. lua (experimental)
+   #+begin_src lua
+     print "hello world"
+   #+end_src
+
 * guide novice users through setting up the org-babel environment
+
+* Setup Procedure
+
+get the bit from osx..........
+
+*the current stable version of org-mode is 7.4*
+
+** Athena
+   This is not recommended, but if you so wish, you *are* able to run org-mode + babel, even evaluate code within your emacs buffer and export directly to pdf, on an athena session. Here's how:
+
+   - If you ssh in to athena, you will be able to run =emacs= directly.
+   - athena runs emacs 22.2.1, and has bundled org-mode 4.67c with it. The current stable version is 7.4 and we won't be talking about anything other than version 7.4 here.
+   - you will want to run a newer org-mode:
+     #+begin_src sh
+       cd ~/.emacs.d
+       wget http://orgmode.org/org-7.4.tar.gz
+       tar xvzf org-7.4.tar.gz
+     #+end_src
+     this is a small file; the download + unpack took me less than 1 minute.
+   - edit your ~/.emacs file to contain this:
+     #+begin_src emacs-lisp
+       (add-to-list 'load-path "~/.emacs.d/bundle/org-7.4/lisp")
+       (add-to-list 'load-path "~/.emacs.d/bundle/org-7.4/contrib/lisp")
+       (require 'org-install)
+       
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((R . t)
+          (python . t)
+          (emacs-lisp . t)
+          (ruby . t)
+          (haskell . t)
+          (sh . t)))
+     #+end_src
+     there could be more supported languages, but these are the only ones that I have tested that work with zero extra configuration, directly from athena
+
+   - if you ssh with the -X option, you will even be able to run the pdf+display export option
+
+*** athena software versions
+    - python :: 2.6.2
+    - ruby :: 1.8.7
+    - perl :: 5.10.0
+    - haskell (ghci) :: 6.8.2
+    - tcsh :: 6.14.00
+    - bash :: 3.2.48
+    - R :: 2.8.1
+    - latex (pdfTeX) :: 3.141592-1.40.3-2.2
+
+** linux
+   
+
+
+
+** osx
+   
+
+
+** windows
+   
+
+
+*** git clone from repo.or.cz is hideously slow
+takes like 20 minutes to download or something
+consider making a snapshot package
+
+*** =make= on windows
+
+=make= will create org-install, which is responsible for loading the stuff in init.el
+doesn't work on windows. workaround?
+
+*** procedures to force org-babel-starter to run without extra effort
+
+toggle org-mode =M-x org-mode= then toggle back, and rerun the last line of lisp
+
+it throws error, due to flyspell
+
+*** fixing flyspell
+
+ref: http://stackoverflow.com/questions/3805647/enabling-flyspell-mode-on-emacs-w32
+ref: http://book.chinaunix.net/special/ebook/oreilly/LearningGnuEmacs/0596006489/gnu3-CHP-13-SECT-3.html
+
+get ispell.zip from http://examples.oreilly.com/9780596006488/
+
+unzip ispell.exe into emacs-xyz/bin
+unzip english.hash into ~
+copy english.hash to american.hash -- verify this step is necessary?
+
+restart emacs, will throw error upon eval the starter.org part (last elisp)
+
+quit backtrace and rerun, works somehow
+
+** installing language support
+
+*** LaTeX with texlive
+
+*** R
+http://cran.r-project.org/bin/windows/base
+
+*** ruby
+
+*** python
+
+*** perl
+
+*** graphviz
+http://graphviz.org/
+
+*** matlab? or octave
+
+
+
 
 ** setting up
 in case people don't have git, or, to prevent build difficulties, provide some kind of package
-
-check if athena has it
 
 *** emacs proper
     - [[http://homepage.mac.com/zenitani/emacs-e.html][mac]], linux (cover deb/ubu), [[http://www.claremontmckenna.edu/math/alee/emacs/emacs.html][win]] ([[http://ftp.gnu.org/gnu/emacs/windows/][ftp-w32]]) versions
@@ -74,10 +367,22 @@ check if athena has it
      - *make sure pdflatex works!*
      - ELPA
      - iimage-mode
+       - demonstrate iimage-mode showing and hiding images within org doc
        - better iimage-mode regex, provide in dotfile
        - gotcha with image path for LaTeX output
      - yasnippet?
+       - provide simple way of enhancing yasnippet
      - undo-tree visualizer? undo is not intuitive
+*** starter-kit
+
+
+**** keybindings and quirks
+
+
+*** no starter-kit
+
+
+
 *** org proper
     - version check
     - git repo
@@ -90,6 +395,11 @@ check if athena has it
 **** babel languages
      - what el files needed? ruby-inf etc.
      - enabling
+
+
+
+
+
 
 ** intro to orgmode
    - quick feature rundown?
@@ -128,6 +438,11 @@ runCommand "say hi there"
 #+end_src
 
 **** ruby, "pagination mockup"
+
+demo the exported version of this after running
+
+use case = programming blog?
+
 #+begin_src ruby :results output
 puts " < [[prev]] | [[next]] >"
 puts "=" * 20
@@ -139,10 +454,59 @@ puts " < [[prev]] | [[next]] >"
 **** clojure
 
 clojure+incanter graphics
+#+begin_src clojure :results output
+1
+#+end_src
 
 **** something that reads twitter
 
 **** more relevant example: subject stats with python
+
+**** other example -- submission to satra, compare benchmark of loop vs. regex
+
+#+begin_src python :results output
+import time, sys, re
+
+ls_test = (" i am illegal file name with spaces",
+        "zxocvijOZJVPOIJDFPOJSDOFIJ89u40958qu3405982345zlvjlzj.......oxzijc",
+        "54984to8vz9x(*&()*@&%)(*&#$)(*@UC*V^(X d98)(&)(////",
+        "asdf/asdf/zije/rta/e46/4567<F5>/4t/hx/rtu0485",
+        "!@#$%^&*())`-=",
+        )
+def get_valid_pathstr(pathstr):
+    for symbol in [' ','[',']','(',')','{','}','?',':','<','>','#','!','|','"',';']:
+        pathstr = pathstr.replace(symbol, '')
+    return pathstr
+
+def get_valid_pathstr_re(pathstr):
+    return re.sub(r'''[] (){}?:<>#!|"';]''', '', pathstr)
+
+# test methods are equal
+for test in ls_test:
+    o, n = get_valid_pathstr(test), get_valid_pathstr_re(test)
+    if o != n:
+        print "OLD GIVES:", o
+        print "NEW GIVES:", n
+    
+NROUND = 10**5
+STARTPATH = "LOREMIPSUMSITDOLORAMET"
+
+def test(func, count):
+    t0 = time.time()
+    for i in xrange(count):
+        func(STARTPATH)
+    print time.time()-t0
+
+for USE_REGEXP in False, True:
+    if USE_REGEXP:
+        print "use regex"
+        test(get_valid_pathstr_re, NROUND)
+    else:
+        print "use old"
+        test(get_valid_pathstr, NROUND)
+
+#+end_src
+
 
 **** R "visual area" plots
 
@@ -187,19 +551,13 @@ turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x1
 
     how to get 1?
 
-**** first attempt
+**** see example from paper or worg. pascal triangle is probably best
 
+    aside of the :noweb directive I don't know if that is possible
 
-**** second
+    problem with :noweb is that if you keep using noweb includes you might be including more code into a block than you actually want in the tangled output
 
-
-**** second
-
-   aside of the :noweb directive I don't know if that is possible
-
-   problem with :noweb is that if you keep using noweb includes you might be including more code into a block than you actually want in the tangled output
-
-   the workaround if you really want to eval multiple blocks, in my knowledge, is to use :session. there's the added benefit that it's async (I think so). but side effect code is dangerous
+    the workaround if you really want to eval multiple blocks, in my knowledge, is to use :session. there's the added benefit that it's async (I think so). but side effect code is dangerous
 
 ** how to convert my existing LaTeX to org?
 
@@ -224,7 +582,6 @@ turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x1
    - clear undo tree when start org-babel buffer or if you press undo you can clear the screen?
      
 
-
    
 
 * specific use-cases and questions. how do I...? etc.
@@ -244,3 +601,9 @@ turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x1
        - some text
        - code bit continuation of 2
      this is easy to author, but what about execution? is session the way to go?
+
+
+* final notes, links and resources
+
+  for new explorers ready to take the plunge: [[http://doc.norang.ca/org-mode.html][organize your life in plain text]]
+
