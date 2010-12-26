@@ -193,6 +193,8 @@ yes, this actually compiles and runs
      int main(void) { printf("hello world!\n"); return 0; }
    #+end_src
 
+#+results:
+
 2. python
    #+begin_src python :results output
      print "hello world!"
@@ -259,6 +261,9 @@ get the bit from osx..........
        wget http://orgmode.org/org-7.4.tar.gz
        tar xvzf org-7.4.tar.gz
      #+end_src
+
+#+results:
+
      this is a small file; the download + unpack took me less than 1 minute.
    - edit your ~/.emacs file to contain this:
      #+begin_src emacs-lisp
@@ -421,6 +426,8 @@ to be pedantic:
 #+begin_src emacs-lisp
 (dotimes (counter 10) (insert (format "trial %s: blah\n" counter)))
 #+end_src
+
+#+results:
 
 *** but you can just use whatever you know well
 
@@ -629,68 +636,65 @@ testing schedule here
 
 *** <start>
 
-#+begin_src sh
-  echo "ta ta ta ta ready go" | espeak
+#+begin_src emacs-lisp
+  (org-overview)
+  (org-open-link-from-string "[[Abstract]]")
+  (show-subtree)
 #+end_src
 
 starting without specified time uses (now)
 
 *** (+0:3) using relative time!!!
 
-
-#+begin_src sh
-  echo "three seconds" | espeak
+#+begin_src emacs-lisp
+  (org-overview)
+  (org-open-link-from-string "[[Intro]]")
+  (show-subtree)
 #+end_src
 
 *** (0:10) used to be absolute -- if use without plus
 
-#+begin_src sh
-  echo "ten seconds" | espeak
+#+begin_src emacs-lisp
+  (org-overview)
+  (org-open-link-from-string "[[Setup Procedure]]")
+  (show-subtree)
 #+end_src
-
 
 *** (+0:3) used to be absolute -- if use without plus
 
-
-#+begin_src sh
-  echo "three seconds after ten" | espeak
+#+begin_src emacs-lisp
+  (org-overview)
+  (org-open-link-from-string "[[evaluating code blocks within a single buffer, in multiple languages]]")
+  (show-subtree)
 #+end_src
-
 
 ** control code
 
-#+begin_src emacs-lisp :results values
-  ;; (defun my-org-run-presentation-schedule (&optional prev-info)
-  
+#+begin_src emacs-lisp
   (defun my-org-run-presentation-schedule (&optional next-headline sec0)
     (interactive)
   
-    ;;(insert (format "*given location: %s*\n" section-location))
-    ;;(insert (format "*given time0: %s*\n" sec0))
-  
     (if (not next-headline) ;; start case, call with no arguments
-        (progn (org-overview)
-               (org-open-link-from-string "[[<schedule controller>]]")
+        (progn (org-open-link-from-string "[[<schedule controller>]]")
                (show-subtree)
                (my-org-run-presentation-schedule "<start>" (second (current-time))))
   
       (let ((time-now (current-time)))
   
-        ;;(insert "NEXT: " next-headline)
-        (org-overview)
+        ;;(org-overview)
         (goto-char (org-find-exact-headline-in-buffer next-headline))
         (show-subtree)
         
         (end-of-line)
         (open-line 1)
         (next-line)
-        (insert (format "--                    --                    section started at [%s]\n" (format-time-string "%Y-%m-%d %H:%M:%S" time-now)))
+        (insert (format "# -- -- -- -- -- -- -- -- -- -- section [[%s]] started at [%s]\n" next-headline (format-time-string "%Y-%m-%d %H:%M:%S" time-now)))
   
         (let (;; determine whether there is another match
-              (next-section-loc (save-excursion (search-forward-regexp "^\\*+ \\((\\(\\+?\\)\\(.*\\)) .*\\)" nil t))
-                                ;;(save-excursion (search-forward-regexp "^\\*+ (\\(\\+?\\)\\(.*\\)) .*" nil t))
-                                ))
+              (next-section-loc (save-excursion (search-forward-regexp "^\\*+ \\((\\(\\+?\\)\\(.*\\)) .*\\)" nil t))))
   
+          ;; there is a time-specification headline after this one;
+          ;; parse it for schedule and queue next run
           (when next-section-loc
             (let* ((next-section-headline (match-string-no-properties 1))
                    (use-relative (> (length (match-string-no-properties 2)) 0))
@@ -700,40 +704,45 @@ starting without specified time uses (now)
                    (in-hour (third spl-rev-time))
                    (str-run-time (if use-relative
                                      (format "%s min %s sec %s hour" in-min in-sec (or in-hour 0))
-                                   ;; we expect absolute time specifications to not exceed 65536 so we
-                                   ;; will only make calculations in regard to the low-value of
-                                   ;; (current-time)
+                                   ;; don't absolute next event schedule to exceed 65536 sec so just
+                                   ;; calculate offset seconds using low-value from (current-time)
                                    (format "%s sec"
                                            (- (+ sec0 (* 60 in-min) in-sec) (second time-now))))))
               
               ;;(insert (format "(run-at-time %s = str-run-time nil 'my-org-run-presentation-schedule)" str-run-time))
               ;;(insert "NEXT FOUND: " next-section-headline)
               (run-at-time str-run-time nil 'my-org-run-presentation-schedule next-section-headline sec0)
-              ;;(outline-next-visible-heading 1)
-              ;;(next-line)
               ))
   
           ;; find and run code blocks
           (let ((next-src-block-end (save-excursion
-                                      (re-search-forward org-babel-src-block-regexp nil t))))
+                                      (re-search-forward org-babel-src-block-regexp nil t)))
+                current-ob-evaluate-confirm org-confirm-babel-evaluate)
             (message (format "%s -- %s" next-src-block-end next-section-loc))
             (when (< next-src-block-end (or next-section-loc (buffer-size)))
               (goto-char (match-beginning 0))
               ;;(org-overview)
-              (org-show-subtree)
-              (org-show-context)
+              ;;(org-show-subtree)
+              ;;(org-show-context)
               (beginning-of-line)
+              (setq org-confirm-babel-evaluate nil)
               (org-babel-execute-src-block)
+              (setq org-confirm-babel-evaluate current-ob-evaluate-confirm)
   
-              (goto-char (+ 1 next-src-block-end))
+              ;;(goto-char (+ 1 next-src-block-end))
               )
             )
   
-          (if (not next-section-loc)
+          (when (not next-section-loc)
               ;; done -- no more sections with schedule format
-              (insert (format "\n--                    --                    presentation ended at [%s]\n" (format-time-string "%Y-%m-%d %H:%M:%S" (current-time))))
+            (save-excursion
+              (goto-char (org-find-exact-headline-in-buffer next-headline))
+              (show-subtree)
+              (next-line)
+              (end-of-line)
+              (open-line 1)
+              (next-line)
+              (insert (format "# -- -- -- -- -- -- -- -- -- -- presentation ended at [%s]\n" (format-time-string "%Y-%m-%d %H:%M:%S" (current-time)))))
             )))))
   
 #+end_src
-
-
