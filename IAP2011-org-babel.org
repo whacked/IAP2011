@@ -135,13 +135,18 @@ http://orgmode.org/worg/org-contrib/babel/uses.php
 if you want to generate the exact same webpage you see on http://eschulte.github.com/emacs-starter-kit/,
 simply export it! (show export)
 
-* Intro
+* Intro (non-hands-on)
 
 will not know answers to all questions, but make sure:
 1. record
 2. find out answer
 3. reply asker + reply to class
 4. post onto *wiki*...
+
+** where is everybody from?
+
+   show of hands: who is a student, researcher, programmer, other?
+   show of hands: who is a total beginner to emacs? to org-mode? to org-babel?
 
 ** why should I care?
 
@@ -175,19 +180,16 @@ will not know answers to all questions, but make sure:
 
 **** whirlwind demo of babel
      - show a raw completed file and export it nicely
-
+       
 **** hello world in 10 languages
 
 tie outputs from each block into the next
 
-***** C
-
-yes, this actually compiles and runs
-
-/somehow syntax highlighting isn't working unless i use lowercase 'c', but compilation requires it to be uppercase/
-
-
 1. C
+
+   yes, this actually compiles and runs
+   /somehow syntax highlighting isn't working unless i use lowercase 'c', but compilation requires it to be uppercase/
+
    #+begin_src c
      #include <stdio.h>
      int main(void) { printf("hello world!\n"); return 0; }
@@ -242,16 +244,43 @@ yes, this actually compiles and runs
      print "hello world"
    #+end_src
 
-* guide novice users through setting up the org-babel environment
-
-* Setup Procedure
+* Setting up
 
 get the bit from osx..........
 
 *the current stable version of org-mode is 7.4*
 
+** people who want minimal fuss: use these VM images, or use it on Athena
+
+*** VirtualBox
+
+*** VMWare
+
+** prepackaged archive containing useful files
+
+*** starter kit
+**** keybindings and quirks
+
+*** non-starter-kit
+
+    make sure you have =(org-src-fontify-natively t)= in your .emacs else you won't get syntax highlighting in-buffer!
+
+
+** anybody a mindhive user? I'm not, but...
+   
+   mindhive runs emacs 23.1.1 with org-mode 6.21b bundled with it. You'll need to install your own copy of org-mode 7.4, but otherwise it should be able to run:
+    - python
+    - perl
+    - R
+    - matlab
+    - pdflatex
+    - tcsh
+    - bash
+
 ** Athena
    This is not recommended, but if you so wish, you *are* able to run org-mode + babel, even evaluate code within your emacs buffer and export directly to pdf, on an athena session. Here's how:
+
+   I assume if you like to ssh into athena, this will be straightforward for you.
 
    - If you ssh in to athena, you will be able to run =emacs= directly.
    - athena runs emacs 22.2.1, and has bundled org-mode 4.67c with it. The current stable version is 7.4 and we won't be talking about anything other than version 7.4 here.
@@ -262,9 +291,8 @@ get the bit from osx..........
        tar xvzf org-7.4.tar.gz
      #+end_src
 
-#+results:
-
      this is a small file; the download + unpack took me less than 1 minute.
+     
    - edit your ~/.emacs file to contain this:
      #+begin_src emacs-lisp
        (add-to-list 'load-path "~/.emacs.d/bundle/org-7.4/lisp")
@@ -280,31 +308,57 @@ get the bit from osx..........
           (haskell . t)
           (sh . t)))
      #+end_src
-     there could be more supported languages, but these are the only ones that I have tested that work with zero extra configuration, directly from athena
+     there may be more supported languages, but these are the only ones that I have tested that work with zero extra configuration, directly from athena
 
    - if you ssh with the -X option, you will even be able to run the pdf+display export option
 
-*** athena software versions
+*** what works on athena
     - python :: 2.6.2
     - ruby :: 1.8.7
     - perl :: 5.10.0
     - haskell (ghci) :: 6.8.2
-    - tcsh :: 6.14.00
-    - bash :: 3.2.48
     - R :: 2.8.1
     - latex (pdfTeX) :: 3.141592-1.40.3-2.2
+    - tcsh
+    - bash
 
-** linux
+** linux (tested on ubuntu 10.10)
+   
+   - packages
+     texlive texlive-extra
+
    
 
 
-
-** osx
+** osx (tested on 10.6.2 and 10.5.8 to a fair degree)
    
+    Strongly recommended to use MacPorts to install the various programs, although since MacPorts likes to compile everything from source code, setup can take several hours. If you are coming with a pristine (clean-slate) machine without your development environment set up, consider just using the VM. Otherwise:
 
+*** to install macports
+
+
+*** macports users
+    packages you'll need:
+
+    the command to install all of them:
+    
+*** non-macports users
+    
+
+*** Carbon Emacs
+
+ [[http://homepage.mac.com/zenitani/emacs-e.html][get it here]]
 
 ** windows
-   
+
+   - there are some nice instructions [[http://www.claremontmckenna.edu/math/alee/emacs/emacs.html][here]] (make sure you grab the latest version!)
+   - get the emacs 23.2 binary for windows ([[http://ftp.gnu.org/gnu/emacs/windows/][ftp-w32]]) 
+     
+*** XP
+
+*** Vista
+
+*** W7
 
 
 *** git clone from repo.or.cz is hideously slow
@@ -356,58 +410,59 @@ http://graphviz.org/
 *** matlab? or octave
 
 
+** post-installation
+   
+   - emacs version check
 
+*** dot files
 
-** setting up
-in case people don't have git, or, to prevent build difficulties, provide some kind of package
+    *make sure pdflatex works!*
 
-*** emacs proper
-    - [[http://homepage.mac.com/zenitani/emacs-e.html][mac]], linux (cover deb/ubu), [[http://www.claremontmckenna.edu/math/alee/emacs/emacs.html][win]] ([[http://ftp.gnu.org/gnu/emacs/windows/][ftp-w32]]) versions
-    - version check
-    - provide VM image for people who want minimal fuss
-      - xubu or DSL?
-    - dot files for novices
-    - gotchas like setenv/getenv, exec-path
-**** other packages here?
-     - *make sure pdflatex works!*
-     - ELPA
+**** new to emacs
+     
+     - starter kit setup instructions
+     - undo-tree visualizer?
+
+**** already emacs user
+
+     - gotchas like setenv/getenv, exec-path
+
+**** other tweaks
      - iimage-mode
        - demonstrate iimage-mode showing and hiding images within org doc
        - better iimage-mode regex, provide in dotfile
        - gotcha with image path for LaTeX output
      - yasnippet?
        - provide simple way of enhancing yasnippet
-     - undo-tree visualizer? undo is not intuitive
-*** starter-kit
 
+*** common keybindings?
 
-**** keybindings and quirks
+    like M-up M-down?
 
+*** adding babel language support
 
-*** no starter-kit
-
-
-
-*** org proper
-    - version check
-    - git repo
-    - dot files providing common styling options
-    - go over common keybindings so people don't get confused like M-up M-down
-*** babel
-    - version check
-    - git repo
-    - built-in langauge support and enabling
 **** babel languages
      - what el files needed? ruby-inf etc.
-     - enabling
 
+* quick orgmode rundown
 
+  If you are not familiar with org-mode, you can just think about it as a plugin for emacs that gives general purpose outlining functionality. This will make your files centered around hierarchical headlines and entries. What this means for us is that now when we are writing, for example, a research report, we will put the relevant analysis code under the relevant section; we will be thinking about how and where the code fits within the flow of the report.
 
+  Here's an example of a working outline of a paper explaining the remarkable properties of stars.
 
+** remarkable properties of stars
 
+   stars are remarkable
 
-** intro to orgmode
-   - quick feature rundown?
+*** why stars are remarkable
+
+**** proof that stars are remarkable
+
+move this stuff around
+
+this functionality alone makes org-mode useful!
+
+for more, check out [[final notes, links and resources]]
 
 * evaluating code blocks within a single buffer, in multiple languages
 
@@ -415,21 +470,13 @@ in case people don't have git, or, to prevent build difficulties, provide some k
 
 ** how this is useful: write code that writes my document for me
 
-*** emacs users -- you might go to eshell first
+*** emacs lisp... rather stupid example
 
-** demo -- "best tool for the job" in the same file
-
-*** emacs users -- you can use elisp
-=(dotimes (counter 10) (insert (format "trial %s: blah\n" counter)))=
-
-to be pedantic:
 #+begin_src emacs-lisp
-(dotimes (counter 10) (insert (format "trial %s: blah\n" counter)))
+  (dotimes (counter 10) (insert (format "trial %s: blah\n" counter)))
 #+end_src
 
-#+results:
-
-*** but you can just use whatever you know well
+*** use what you are familiar with
 
 **** shell script
 
@@ -437,11 +484,12 @@ to be pedantic:
 for i in {1..10}; do echo image-`printf %03d "$i"`.png; done
 #+end_src
 
-**** haskell -- there's a bug in haskell output -- last line does not get printed, but it does get evaluated
+**** haskell -- there seesm to be a bug in haskell output -- last line does not get printed, but it does get evaluated
+
 #+begin_src haskell :results output
 import System.Process
 show (take 10 [1..])
-runCommand "say hi there"
+runCommand "echo hi there | espeak"
 #+end_src
 
 **** ruby, "pagination mockup"
@@ -460,12 +508,9 @@ puts " < [[prev]] | [[next]] >"
 
 **** clojure
 
-clojure+incanter graphics
-#+begin_src clojure :results output
-1
-#+end_src
+newest slime-clojure doesn't play well with this
 
-**** something that reads twitter
+**** something that reads twitter... ???? probably not
 
 **** more relevant example: subject stats with python
 
@@ -568,10 +613,104 @@ turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x1
 
 ** how to convert my existing LaTeX to org?
 
+*** ikmeans example
+
+**** original
+
+     Here's a document about cluster analysis from a friend of mine, written in LaTeX
+     
+     [[~/note/statistics/cluster analysis/arnaldo-ikmeans/arnaldo-ikmeans.tex]]
+
+     current output looks like this
+
+     [[~/note/statistics/cluster analysis/arnaldo-ikmeans/arnaldo-ikmeans.pdf]]
+
+**** conversion attempt 1, direct include
+
+     create a conversion file here (make sure it's not the same name, or the original .tex file may get overwritten during export!)
+
+     [[~/note/statistics/cluster analysis/arnaldo-ikmeans/arnaldo-ikmeans-converted.org]]
+
+     the initial contents -- this can already export
+
+     #+begin_src latex :tangle arnaldo-ikmeans-converted-1.tex
+       \include{arnaldo-ikmeans}
+     #+end_src
+
+**** attempt 2, put all LaTeX into a single latex block
+
+     of course it doesn't all come out right, because this command simply inserts the origin LaTeX document's contents into the file, while org-mode has its own default document template. To fix this, I'm going to do is insert the original contents myself and reappropriate the LaTeX headers for org-mode's export.
+     
+     #+begin_src latex :tangle arnaldo-ikmeans-converted-2.tex
+       ... (insert entire file contents)
+     #+end_src
+
+     this asks whether we want to eval, sure -- that generates the LaTeX that is used to export
+
+**** attempt 3, changing LaTeX directives into org-mode headers
+
+     it turns out that the default LaTeX directives that org-mode uses doesn't play nice with the original, so we override them by changing the title, adding some headers, and a bit of elisp that adds the headers the way we want:
+
+     #+begin_src org
+       ,#+TITLE: Notes on Exploratory Data Analysis
+       ,#+AUTHOR: Arnaldo E. Pereira
+       ,#+LATEX_CLASS: org-article
+       ,#+LaTeX_CLASS_OPTIONS: []
+       ,#+LaTeX_HEADER: \usepackage{amssymb}
+       ,#+LaTeX_HEADER: \usepackage{amsmath}
+       ,#+LaTeX_HEADER: \usepackage{fullpage}
+       ,#+LaTeX_HEADER: \usepackage{graphicx}
+       ,     
+     #+end_src
+     
+     #+begin_src emacs-lisp :exports none
+       (add-to-list 'org-export-latex-classes
+             '("org-article"
+                "\\documentclass{article}
+                [NO-DEFAULT-PACKAGES]
+                [PACKAGES]
+                [EXTRA]"
+                ("\\section{%s}" . "\\section*{%s}")
+                ("\\subsection{%s}" . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+     #+end_src
+
+     #+begin_src latex
+       \newcommand{\kmeans}{$K$-means }
+       \newcommand{\figurebox}[1]{\begin{center}\fbox{\includegraphics[height=2.8in]{#1}}\end{center}}
+       ...
+       
+     #+end_src
+
+     my export program doesn't like the eps files I'm linking to... maybe change these but if not, resort to:
+
+     #+begin_src sh
+       texi2dvi arnaldo-ikmeans-converted.tex
+       dvipdf arnaldo-ikmeans-converted.dvi
+            
+     #+end_src
+     
+     and it looks about right!
+
+**** attempt 4 and so on...
+
+     convert the latex to org, if you so wish
+
 ** how to convert my code to org?
 
+   This is an example taken from the nipype fsl tutorial... and we change it to org code.
 
 ** tangle-based dev cycle? is this a good idea at all?
+
+   the bad is before you execute, you need to tangle
+
+   the good is you're always in a "prose friendly" environment that allows you to quickly switch between report sections / documentation and code.
+
+*** creating hooks to auto-execute
+
+    don't have a beautiful solution yet
 
 
 * limitations & issues
@@ -597,8 +736,7 @@ turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x1
    - M-x visual-line-mode
 
    - I want to include certain lines from a different file into my org file. how do I do that?
-   - how large a file can org handle?
-
+   - how large a file can org handle? -- syntax highlighting does get slower when the file is large
 
    - how to denote separate blocks and related blocks across several sections? i.e.
      - section 1.
@@ -619,53 +757,35 @@ turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x1
 
 * final notes, links and resources
 
-  for new explorers ready to take the plunge: [[http://doc.norang.ca/org-mode.html][organize your life in plain text]]
+  for new explorers ready to take the plunge into org-mode: [[http://doc.norang.ca/org-mode.html][organize your life in plain text]]
+
+  http://orgmode.org/worg/org-contrib/babel/uses.php
 
 
+* presentation schedule control
 
-* presentation control
-
-
-* schedule
-
-automated presentation flow control
+automated presentation flow controller
 
 ** <schedule controller>
-
-testing schedule here
 
 *** <start>
 
 #+begin_src emacs-lisp
-  (org-overview)
   (org-open-link-from-string "[[Abstract]]")
-  (show-subtree)
 #+end_src
 
 starting without specified time uses (now)
 
-*** (+0:3) using relative time!!!
+*** (+2) using relative time!!!
 
 #+begin_src emacs-lisp
-  (org-overview)
   (org-open-link-from-string "[[Intro]]")
-  (show-subtree)
 #+end_src
 
-*** (0:10) used to be absolute -- if use without plus
+*** (4) used to be absolute -- if use without plus
 
 #+begin_src emacs-lisp
-  (org-overview)
   (org-open-link-from-string "[[Setup Procedure]]")
-  (show-subtree)
-#+end_src
-
-*** (+0:3) used to be absolute -- if use without plus
-
-#+begin_src emacs-lisp
-  (org-overview)
-  (org-open-link-from-string "[[evaluating code blocks within a single buffer, in multiple languages]]")
-  (show-subtree)
 #+end_src
 
 ** control code
