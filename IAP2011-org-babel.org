@@ -677,7 +677,9 @@ starting without specified time uses (now)
       (let ((time-now (current-time)))
   
         ;;(insert "NEXT: " next-headline)
+        (org-overview)
         (goto-char (org-find-exact-headline-in-buffer next-headline))
+        (show-subtree)
         
         (end-of-line)
         (open-line 1)
@@ -690,7 +692,6 @@ starting without specified time uses (now)
                                 ))
   
           (when next-section-loc
-            (show-all)
             (let* ((next-section-headline (match-string-no-properties 1))
                    (use-relative (> (length (match-string-no-properties 2)) 0))
                    (spl-rev-time (reverse (map 'list 'string-to-number (split-string (match-string-no-properties 3) ":"))))
@@ -712,7 +713,7 @@ starting without specified time uses (now)
               ;;(next-line)
               ))
   
-          ;; determine if there is a code block
+          ;; find and run code blocks
           (let ((next-src-block-end (save-excursion
                                       (re-search-forward org-babel-src-block-regexp nil t))))
             (message (format "%s -- %s" next-src-block-end next-section-loc))
