@@ -68,13 +68,6 @@ check the org paper on executing multiple code blocks with single command? by ch
 
     lua tutorial
 
-* Current (and new) questionst to Eric and others
-
-- how to export the org paper?
-- how much of the paper is usable as public demo material?
-
-
-
 * Abstract
 
   This is a hands-on, practical workshop in getting started with literate programming (and beyond) with Emacs + org-mode + org-babel. We will touch briefly on the concepts of LP, organizing and manipulating information in org-mode, and dive right into using the uniquely powerful features provided by org-babel: writing documents in multiple programming languages and executing them without leaving your writing environment; outputting, processing, and formatting program output; publishing documents containing (or not) the source code, and the results and figures. This workshop is geared towards: students, researchers, programmers, and individuals who want a more streamlined workflow and more efficient information management methods, write programs with richer and more understandable documentation; anybody who is interested in Knuth's literate programming philosophy, and/or how to write "executable documents".
@@ -86,33 +79,20 @@ check the org paper on executing multiple code blocks with single command? by ch
 
 * ideas from Eric + org-mode community
 
-** what's the difference between starter kits?
+** initial demo -- demonstrate how the workflow is useful
 
-technomancy's is the original
-https://github.com/technomancy/emacs-starter-kit
+   multiple export -- html + pdf;
+   setup a "live update" machine with an iframe that keeps refreshing on an html page + pdf viewer to demonstrate export
 
-notice that in eschulte's version, the .el files are mostly .org files
+** the Emacs starter kit
 
+   If you search, there a couple versions. [[https://github.com/technomancy/emacs-starter-kit][technomancy's]] is the original, but if you're specifically aiming to jump into org-mode and org-babel, you'll want to get [[http://eschulte.github.com/emacs-starter-kit/][eschulte's]] version.
 
-** setup
+   To my knowledge, the main difference (and a big one), aside of org-mode, org-babel, auctex, and some other extra packages Eric added, is the maintenance process for the configuration (startup) files.
 
-If you think you will have sufficient time, it may be worthwhile to have the audience install Org-mode locally and work through a couple of hands-on examples.
+   When using Eric's version, /most of the .el files get generated from .org files/, so most of your configrations would be contained in source blocks in the .org files. If you check out the emacs-starter-kit documentation, you'll also realize that it's an export of those same .org files!
 
-** Eric's fork of the Emacs starter kit [1] to get people up and running.
-
-- It includes install instructions, and most importantly it bundles and
-configures all relevant Emacs packages.  I have installed it on a number
-of machines (all Linux and Mac, I have no windows experience) to the
-point where the process should be pretty smooth.  I would definitely
-recommend going through the install process yourself on a couple of
-fresh machines and getting to the point where you can easily run through
-your examples.
-
-** initial demo
-
-When I've introduced users to Org-mode I find that the first "wow" moment is generally when you've typed up a simple file (couple of headings, a list, a code block and a table, etc...) and export that file to both html (C-c C-e b) and to pdf (C-c C-e d).  Seeing the quick export to disparate backends tends to get peoples attention and start the "how can I apply this to my workflow" thought process.
-
-*** setup a "live update" machine with an iframe that keeps refreshing on an html page + pdf viewer to demonstrate export
+** hands-on examples?
 
 After that I'd recommend a quick general Org-mode introduction (see Worg for resources) and then I'll recommend a couple of resources for code block specific examples.
 
@@ -120,14 +100,9 @@ After that I'd recommend a quick general Org-mode introduction (see Worg for res
 
 2) scraps.org :: https://github.com/eschulte/babel-dev/raw/master/scraps.org
 
-3) Worg :: Finally there is the Babel introductory tutorial [4] on Worg
-     which hasn't been updated in months, but is our early attempt at a
-     comprehensive introduction to babel usage.  There is also a uses
-     page on Worg which provides examples of real-life applications
-     of Babel.
-http://orgmode.org/worg/org-contrib/babel/intro.php
-
-http://orgmode.org/worg/org-contrib/babel/uses.php
+3) Worg
+  - http://orgmode.org/worg/org-contrib/babel/intro.php
+  - http://orgmode.org/worg/org-contrib/babel/uses.php
 
 
 ** after you install the starter kit
@@ -492,7 +467,7 @@ show (take 10 [1..])
 runCommand "echo hi there | espeak"
 #+end_src
 
-**** ruby, "pagination mockup"
+**** ruby, "pagination mockup" -- probably not
 
 demo the exported version of this after running
 
@@ -506,7 +481,7 @@ puts "=" * 20
 puts " < [[prev]] | [[next]] >"
 #+end_src
 
-**** clojure
+**** clojure -- probably not
 
 newest slime-clojure doesn't play well with this
 
@@ -559,10 +534,56 @@ for USE_REGEXP in False, True:
 
 #+end_src
 
+*** what about something iterative/interactive?
+
+**** using octave
+
+     If you use a single, one-off source block, babel will usually just run the script, grab the output, quit the script, and output the result according to the =:results= parameters. In other words, you won't be able to use figures:
+
+     #+begin_src octave :results output
+       figure
+       disp('do you see my figure?')
+     #+end_src
+
+     To show figures, you'll need a persistent *session* running as an "inferior process". Use the =:session= header to start one:
+
+     #+begin_src octave :results output :session looking-for-my-octave-session
+       figure
+       disp('do you see my figure?')
+       x = linspace(0, pi, 20);
+       y = sin(x);
+
+     #+end_src
+     
+     the results don't get output like before though
+
+     Since it's an actual process running within emacs, you can jump to that "session" and use it like your normal inferior process. To do this, go to a code block that has the session name set to the one you want:
+
+     #+begin_src octave :session looking-for-my-octave-session
+       disp('I am looking for my octave session')
+       disp('if you run M-x org-babel-pop-to-session here -- or do C-x C-e at the closing parenthesis here: (org-babel-pop-to-session), you''ll find your session!')
+       plot(x, y)
+     #+end_src
+
+     You'll be able to run =quit= from the octave session and quit it. If you re-execute the octave block again, it will restart a new session for you (obviously, you'll lose any of the values you've set from the previous execution)
+
+**** using R
+
+     #+begin_src R :session test-r
+       x <- seq(0, pi, length.out=20)
+       y <- sin(x)
+       
+     #+end_src
+     
+     #+begin_src R :session test-r
+       plot(y ~ x)
+     #+end_src
 
 **** R "visual area" plots
 
-turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x11
+  turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x11
+
+  use sessions instead
 
 ** passing evaluation results to other code blocks
 
@@ -732,9 +753,7 @@ turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x1
 
 * specific use-cases and questions. how do I...? etc.
 
-** how do i word-wrap?
-   - M-x visual-line-mode
-
+   - how do i word-wrap? :: M-x visual-line-mode
    - I want to include certain lines from a different file into my org file. how do I do that?
    - how large a file can org handle? -- syntax highlighting does get slower when the file is large
 
@@ -748,6 +767,14 @@ turns out =do.call= doesn't play nice with 40k-row dataset? plot blows up for x1
        - code bit continuation of 2
      this is easy to author, but what about execution? is session the way to go?
 
+   - different-size headers? :: M-x customize-group org-faces, or:
+        #+begin_src emacs-lisp
+          (setq org-level-1 ((t (:inherit outline-1 :weight bold :height 1.6 :family "Verdana"))))
+          (setq org-level-2 ((t (:inherit outline-2 :height 1.5 :family "Verdana"))))
+                 
+        #+end_src
+        etc.
+        
 ** key rebindings
 
    (for relative newcomers) do not hesitate to rebind keys. depending on your workflow, the defaults may be suboptimal. doesn't seem like it at first, but 2-keystroke shortcuts can end up feeling too slow!
@@ -858,7 +885,7 @@ starting without specified time uses (now)
             (save-excursion
               (goto-char (org-find-exact-headline-in-buffer next-headline))
               (show-subtree)
-              (next-line)
+p              (next-line)
               (end-of-line)
               (open-line 1)
               (next-line)
