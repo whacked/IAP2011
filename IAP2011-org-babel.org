@@ -885,7 +885,7 @@ starting without specified time uses (now)
             (save-excursion
               (goto-char (org-find-exact-headline-in-buffer next-headline))
               (show-subtree)
-p              (next-line)
+              (next-line)
               (end-of-line)
               (open-line 1)
               (next-line)
