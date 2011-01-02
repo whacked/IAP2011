@@ -1,0 +1,226 @@
+
+This is the presentation script. It will also be our example to export into a research-paper-styled document in the end.
+
+*** <start>
+
+Hello and welcome to this workshop about literate programming in org-mode.
+
+
+
+We are going to cover...
+x y z
+
+
+
+*** where is everybody from?
+
+    show of hands: who is a student, researcher, programmer, other?
+    show of hands: who is a total beginner to emacs? to org-mode? to org-babel?
+
+
+Just for a show of hands, how many of you are
+- new to emacs
+- new to org-mode
+- new to org-babel
+
+
+
+Now you might be asking, why [me], why emacs, org-mode, and org-babel.
+If you are completely new to org-babel, then you've come to the right place.
+
+I discovered the org-babel project last summer, so I've only been using it for about half a year, but it's such an amazing piece of work, in a -- literally -- life-changing way, that I've become extremely enthusiastic about it. But for its incredible power it still seems relatively unknown, and that's why I'm here. And hopefully through this workshop, you will be able to find things about org-mode and org-babel that are useful and maybe even get you enthusiastic as well.
+
+*** what is literate programming, and why org-babel
+
+Believe me, I've looked around for something that would let me write all kinds of documents as I please, and if needed, write code in it, paste images, do the laundry. Plus, I need to be able to use this at home, at work, on the go. This is the one piece of software that will let you do exactly that, minus the laundry.
+
+Indeed, the entire presentation you see on the screen now is written, and controlled from, an org-babel document.
+
+
+
+
+
+Being a relative newcomer to this package as well, and given its massive featureset, there *will* be things that you ask that I don't know the answer to, or you know a better answer. If the latter, please don't hesitate to shout out your answer, to correct me, or if nobody knows the answer, I'll hunt it down for you. Please note that the answer hunting service only applies to questions from today's attendees during today's session!
+
+
+**** what's in it for me?
+
+***** for students and researchers
+
+    - example of student report with reference management and rapid movement of sections
+
+    - example of paper-in-progress with figures, tables, analysis code
+
+****** current LaTeX users
+
+
+***** for programmers
+
+****** how is this different from verbose commenting?
+
+       the flow of thought is facilitated differently
+
+granted, I have not written a non-trivial program entirely from an org-mode buffer. But I will show you a few examples where starting from, or converting to, and org-mode version of your program is more compelling than the prevalent coding and commenting (e.g. javadoc) styles.
+
+***** literate programming
+
+You might have read or heard about literate programming ...
+
+(show of hands)
+
+Using org-babel is what really explained it to me, and I was an instant fan. Why did it take this long? If you read the Wikipedia article you'll realize that there are a lot of abstract terms like "tangling" and "weaving"
+
+Even if it makes sense, it seems like a lot of work. It actually is: if you have a literate document, you'll need a program to first preprocess the document to separate code from prose. The code then gets put together into source files like your traditional files suitable for compiling. That's the "tangling" step you'll see in the Wikipedia article. On the other hand you have another program that turns your prose and code into a nicely formatted document for human consumption. That's called the "weaving" step.
+
+I could draw a diagram out for you but we'll cover all of these concepts with a few examples, and you'll be wondering why everybody else is doing it wrong. And that's a fair question: the reason, as you'll also notice, is because tangling and weaving requires extra effort, as it requires a separate program for separating human from computer language, and also requires your document editor to be aware of both syntaxes (think spellcheck + code check!).
+
+The nice thing about org-babel is that this tangling and weaving is done automatically behind the scenes. All you do is worry about your one org document, and let emacs and org handle the rest. It really makes literate programming *natural*.
+
+I'm almost done talking.
+
+**** where to put links to worg wiki?
+
+
+*** unique powers of Babel ("wow effect")
+
+**** whirlwind demo of babel
+     - show a raw completed file and export it nicely
+       
+**** hello world from org-babel
+
+So that was exporting. Let me show you what it means to run program code right from your document... in 10 different languages.
+
+choppr shellr
+
+***** C
+
+yes, this actually compiles and runs
+/somehow syntax highlighting isn't working unless i use lowercase 'c', but compilation requires it to be uppercase/
+
+#+srcname: c_hello
+#+begin_src C :results output
+  #include <stdio.h>
+  int main(void) { printf("C"); return 0; }
+#+end_src
+
+
+***** shell
+#+srcname: sh_hello(input = R_hello)
+#+begin_src sh :results output
+  echo $input sh
+  #echo "hello world from" `$SHELL --version | head -1`
+
+#+end_src
+
+***** octave
+
+#+srcname: Z_hello
+#+begin_src ruby :results output
+  print "'Ch';"
+#+end_src
+
+#+src name: octave_hello(input = haskell_hello)
+
+#+srcname: octave_hello(input = Z_hello)
+#+begin_src octave :results output
+  disp([input 'o']);
+
+#+end_src
+
+
+***** ruby
+
+
+#+srcname: ruby_hello(input = lua_hello)
+#+begin_src ruby :results output
+  # puts input
+  # puts "hello world from ruby #{RUBY_VERSION}"
+  print "#{input.strip}r"
+#+end_src
+
+***** python
+
+#+srcname: python_hello(input = octave_hello)
+#+begin_src python :results output
+  import sys
+  print "%sp" % (input.strip())
+  # print input + "\nhello world from python! %s" % sys.version.split("\n")[0]
+  
+#+end_src
+
+***** emacs-lisp ?
+
+#+srcname: elisp_hello(input = sh_hello)
+#+begin_src emacs-lisp :results output
+  ;;(concat (or input "") "hello world from emacs lisp on " (first (split-string (version) "\n")))
+  (concat (or input "") "el")
+#+end_src
+
+***** haskell
+   iffy -- haskell may have some bugs
+
+#+srcname: haskell_hello(input = c_hello)
+#+begin_src haskell :results output
+  putStrLn (input ++ "h")
+  take 1 [1..] -- currently, last line seems to get dropped in results parsing
+
+#+end_src
+
+***** perl
+#+srcname: perl_hello(input = python_hello)
+#+begin_src perl :results output
+  chomp $input;
+  print $input . "p";
+  # print "hello world from perl " . $];
+
+#+end_src
+
+***** R
+
+#+srcname: R_hello
+
+#+srcname: R_hello(input = perl_hello)
+#+begin_src R :results output
+  #cat(sprintf("%s\nhello world from %s", input, version$version.string))
+  cat(input, "R", sep="")
+#+end_src
+
+***** lua (experimental)
+
+#+srcname: zz_hello
+#+begin_src ruby :results output
+  print "ChoppR shel"
+#+end_src
+
+  #+srcname: lua_hello(input = elisp_hello)
+#+srcname: lua_hello(input = zz_hello)
+#+begin_src lua :results output
+  print(input.."l")
+#+end_src
+
+*** outline of the workshop
+
+This workshop has three major sections (basically high level overview of IAP org file outline)
+
+- setting up your environment
+
+
+We are now at a fork in the road, and you must choose your path depending on your equipment:
+
+If you have (and are using):
+
+*move the setup procedure section*
+
+**** up-to-date emacs with org-mode and org-babel installed already
+     Please make sure you are running org version 7.4 =(org-version)=
+     You must be here for the party. Please help others out!
+
+
+**** up-to-date emacs
+     do you have a working TeX distribution?
+
+**** vanilla system
+     check out the installation instructions
+     if it looks complicated, download VirtualBox, grab the VM image
+
+

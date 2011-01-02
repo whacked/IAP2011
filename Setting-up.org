@@ -1,0 +1,203 @@
+get the bit from osx..........
+
+*the current stable version of org-mode is 7.4*
+
+** people who want minimal fuss: use these VM images, or use it on Athena
+
+*** VirtualBox
+
+*** VMWare
+
+** prepackaged archive containing useful files
+
+*** starter kit
+**** keybindings and quirks
+
+*** non-starter-kit
+
+    make sure you have =(org-src-fontify-natively t)= in your .emacs else you won't get syntax highlighting in-buffer!
+
+
+** anybody a mindhive user? I'm not, but...
+   
+   mindhive runs emacs 23.1.1 with org-mode 6.21b bundled with it. You'll need to install your own copy of org-mode 7.4, but otherwise it should be able to run:
+    - python
+    - perl
+    - R
+    - matlab
+    - pdflatex
+    - tcsh
+    - bash
+
+** Athena
+   This is not recommended, but if you so wish, you *are* able to run org-mode + babel, even evaluate code within your emacs buffer and export directly to pdf, on an athena session. Here's how:
+
+   I assume if you like to ssh into athena, this will be straightforward for you.
+
+   - If you ssh in to athena, you will be able to run =emacs= directly.
+   - athena runs emacs 22.2.1, and has bundled org-mode 4.67c with it. The current stable version is 7.4 and we won't be talking about anything other than version 7.4 here.
+   - you will want to run a newer org-mode:
+     #+begin_src sh
+       cd ~/.emacs.d
+       wget http://orgmode.org/org-7.4.tar.gz
+       tar xvzf org-7.4.tar.gz
+     #+end_src
+
+     this is a small file; the download + unpack took me less than 1 minute.
+     
+   - edit your ~/.emacs file to contain this:
+     #+begin_src emacs-lisp
+       (add-to-list 'load-path "~/.emacs.d/bundle/org-7.4/lisp")
+       (add-to-list 'load-path "~/.emacs.d/bundle/org-7.4/contrib/lisp")
+       (require 'org-install)
+       
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((R . t)
+          (python . t)
+          (emacs-lisp . t)
+          (ruby . t)
+          (haskell . t)
+          (sh . t)))
+     #+end_src
+     there may be more supported languages, but these are the only ones that I have tested that work with zero extra configuration, directly from athena
+
+   - if you ssh with the -X option, you will even be able to run the pdf+display export option
+
+*** what works on athena
+    - python :: 2.6.2
+    - ruby :: 1.8.7
+    - perl :: 5.10.0
+    - haskell (ghci) :: 6.8.2
+    - R :: 2.8.1
+    - latex (pdfTeX) :: 3.141592-1.40.3-2.2
+    - tcsh
+    - bash
+
+** linux (tested on ubuntu 10.10)
+
+   - estimated setup time: ubuntu on high speed connection: ~30m
+   
+   - packages
+     texlive texlive-extra
+
+   
+
+
+** osx (tested on 10.6.2 and 10.5.8 to a fair degree)
+   
+   - estimated setup time: stock OSX system: several hours!
+
+    Strongly recommended to use MacPorts to install the various programs, although since MacPorts likes to compile everything from source code, setup can take several hours. If you are coming with a pristine (clean-slate) machine without your development environment set up, consider just using the VM. Otherwise:
+
+*** to install macports
+
+
+*** macports users
+    packages you'll need:
+
+    the command to install all of them:
+    
+*** non-macports users
+    
+
+*** Carbon Emacs
+
+ [[http://homepage.mac.com/zenitani/emacs-e.html][get it here]]
+
+** windows
+
+   - stock windows system, XP through windows 7: ~3 hours? texlive is slow
+   
+   - there are some nice instructions [[http://www.claremontmckenna.edu/math/alee/emacs/emacs.html][here]] (make sure you grab the latest version!)
+   - get the emacs 23.2 binary for windows ([[http://ftp.gnu.org/gnu/emacs/windows/][ftp-w32]]) 
+     
+*** XP
+
+*** Vista
+
+*** W7
+
+
+*** git clone from repo.or.cz is hideously slow
+takes like 20 minutes to download or something
+consider making a snapshot package
+
+*** =make= on windows
+
+=make= will create org-install, which is responsible for loading the stuff in init.el
+doesn't work on windows. workaround?
+
+*** procedures to force org-babel-starter to run without extra effort
+
+toggle org-mode =M-x org-mode= then toggle back, and rerun the last line of lisp
+
+it throws error, due to flyspell
+
+*** fixing flyspell
+
+ref: http://stackoverflow.com/questions/3805647/enabling-flyspell-mode-on-emacs-w32
+ref: http://book.chinaunix.net/special/ebook/oreilly/LearningGnuEmacs/0596006489/gnu3-CHP-13-SECT-3.html
+
+get ispell.zip from http://examples.oreilly.com/9780596006488/
+
+unzip ispell.exe into emacs-xyz/bin
+unzip english.hash into ~
+copy english.hash to american.hash -- verify this step is necessary?
+
+restart emacs, will throw error upon eval the starter.org part (last elisp)
+
+quit backtrace and rerun, works somehow
+
+** installing language support
+
+*** LaTeX with texlive
+
+*** R
+http://cran.r-project.org/bin/windows/base
+
+*** ruby
+
+*** python
+
+*** perl
+
+*** graphviz
+http://graphviz.org/
+
+*** matlab? or octave
+
+
+** post-installation
+   
+   - emacs version check
+
+*** dot files
+
+    *make sure pdflatex works!*
+
+**** new to emacs
+     
+     - starter kit setup instructions
+     - undo-tree visualizer?
+
+**** already emacs user
+
+     - gotchas like setenv/getenv, exec-path
+
+**** other tweaks
+     - iimage-mode
+       - demonstrate iimage-mode showing and hiding images within org doc
+       - better iimage-mode regex, provide in dotfile
+       - gotcha with image path for LaTeX output
+     - yasnippet?
+       - provide simple way of enhancing yasnippet
+
+*** common keybindings?
+
+    like M-up M-down?
+
+*** adding babel language support
+
+**** babel languages
+     - what el files needed? ruby-inf etc.
