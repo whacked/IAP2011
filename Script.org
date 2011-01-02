@@ -1,6 +1,17 @@
 
 This is the presentation script. It will also be our example to export into a research-paper-styled document in the end.
 
+#+begin_src emacs-lisp
+ (defun count-words (start end)
+    "Print number of words in the region."
+    (interactive "r")
+    (save-excursion
+      (save-restriction
+        (narrow-to-region start end)
+        (goto-char (point-min))
+        (message (format "%s" (count-matches "\\sw+"))))))
+#+end_src
+
 *** <start>
 
 Hello and welcome to this workshop about literate programming in org-mode.
@@ -12,7 +23,7 @@ x y z
 
 
 
-*** where is everybody from?
+*** (+30) where is everybody from?
 
     show of hands: who is a student, researcher, programmer, other?
     show of hands: who is a total beginner to emacs? to org-mode? to org-babel?
@@ -30,7 +41,7 @@ If you are completely new to org-babel, then you've come to the right place.
 
 I discovered the org-babel project last summer, so I've only been using it for about half a year, but it's such an amazing piece of work, in a -- literally -- life-changing way, that I've become extremely enthusiastic about it. But for its incredible power it still seems relatively unknown, and that's why I'm here. And hopefully through this workshop, you will be able to find things about org-mode and org-babel that are useful and maybe even get you enthusiastic as well.
 
-*** what is literate programming, and why org-babel
+*** (+45) what is literate programming, and why org-babel
 
 Believe me, I've looked around for something that would let me write all kinds of documents as I please, and if needed, write code in it, paste images, do the laundry. Plus, I need to be able to use this at home, at work, on the go. This is the one piece of software that will let you do exactly that, minus the laundry.
 
@@ -40,8 +51,11 @@ Indeed, the entire presentation you see on the screen now is written, and contro
 
 
 
-Being a relative newcomer to this package as well, and given its massive featureset, there *will* be things that you ask that I don't know the answer to, or you know a better answer. If the latter, please don't hesitate to shout out your answer, to correct me, or if nobody knows the answer, I'll hunt it down for you. Please note that the answer hunting service only applies to questions from today's attendees during today's session!
+Being a relative newcomer to this package as well, and given its massive featureset, there *will* be things that you ask that I don't know the answer to, or you know a better answer. If the latter, please don't hesitate to shout out your answer, to correct me, or if nobody knows the answer, I'll hunt it down for you. (Please note that the answer hunting service only applies to questions from today's attendees during today's session!)
 
+(is there a wiki?)
+
+(is there anything on stellar?)
 
 **** what's in it for me?
 
@@ -203,6 +217,7 @@ yes, this actually compiles and runs
 This workshop has three major sections (basically high level overview of IAP org file outline)
 
 - setting up your environment
+- 
 
 
 We are now at a fork in the road, and you must choose your path depending on your equipment:

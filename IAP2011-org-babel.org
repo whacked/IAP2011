@@ -113,11 +113,7 @@ simply export it! (show export)
 
 * Intro (non-hands-on)
 
-will not know answers to all questions, but make sure:
-1. record
-2. find out answer
-3. reply asker + reply to class
-4. post onto *wiki*...
+(first few sections starting from [[file:Script.org::*where%20is%20everybody%20from?][where is everybody from?]])
 
 * Setting up
 
