@@ -8,24 +8,158 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
 
-This document is up-to-date as of 2010-12-24 16:22:12
 
-org-structure-template-alist
+* other stuff to add
 
+why i didn't publish earlier
+
+i didn't think i was expert enough
+
+but then i realized how deep this is -- so publish now and revise
+
+
+
+* prepwork
+
+- turn on CCMP mouse tracking before begin
+- test out screencast recording
 
 * TODO 
 
-Utilize some kind of macro to make sure the download links are correct
-
-** to record feedback
-
-   - create a remember buffer for feedback
    - bring recorder for session (if use, need tell audience)
-   - what about the wiki? and stellar?.......... uhhhhhhhhhh
+   - set up athena session and continually export QA
+
+*** procedure.txt
+
+check out http://vimeo.com/16533939
+
+
+you may need to get users to install git
+http://code.google.com/p/msysgit/downloads/list
+
+
+- git clone https://github.com/eschulte/emacs-starter-kit.git
+- curl -O http://ftp.gnu.org/gnu/emacs/windows/emacs-23.2-bin-i386.zip
+- unzip emacs
+- start emacs with emacs-23.2/bin/runemacs.exe # running the emacs.exe will create an annoying DOS window
+- to create your init file, you can just do C-x C-f ~/.emacs, edit it, and it will be loaded on next startup
+
+
+   3. Move the resulting directory to ~/.emacs.d 1
+
+you can do this within emacs, without really keeping track of the actual ~/.emacs.d location, by typing M-x rename-file --> BLAH/emacs-starter-kit --> ~/.emacs.d/emacs-starter-kit
+-- this is actually not a fun way, given the commands that follow
+
+   4. Install the Org-mode submodules with the following
+
+      cd ~/.emacs.d/
+      git submodule init
+      git submodule update
+
+cloning seems to take a while
+
+   5. build Org-mode
+
+      cd src/org/
+      make
+
+make command may require cygwin
+
+   6. build auctex – for instilllation help see the auctex instillation instructions, auctex requires a working TeX installation
+
+      cd src/auctex
+      ./configure && make
+
+   7. Launch Emacs!
+
+
+
+--- end procedure.txt
+-----
+
+** survey of purpose
+
+depending on turnout
+try find out whta people need
+create twitter refresher or some other interactive method to allow dynamic/realtime feedback
+
+** tips and tricks
+
+no ipython again!
+
+2011-02-02 02:01:41
+so i was considering starting an ipython buffer to try something out
+then i thought, if it works, i would stick the code into a file
+then i thought, why not start with a file to begin with?
+so i started a new org file
+
+then i got an error, and thought, wouldn't it be nice if i could run this interactively first?
+the solution: add the session header, start a session
+
+2011-02-03 15:04:10
+is babel possible in vim?
+it looks possible: http://vim.wikia.com/wiki/Execute_Python_from_within_current_file
+
+
+** best friend keys
+
+because beginners won't take these keys for granted
+
+   (for relative newcomers) do not hesitate to rebind keys. depending on your workflow, the defaults may be suboptimal. doesn't seem like it at first, but 2-keystroke shortcuts can end up feeling too slow!
+
+*** switching between files from the emacs window
+
+C-xb
+
+*** splitting the window
+
+C-x2 (up-down)
+C-x3 (left-right)
+
+*** in org-mode
+
+hover over a hyperlink and press C-cC-o
+
+*** quitting
+
+
+
+*** navigation
+
+C-cC-n, C-cC-p
+
+*** code blocks
+
+C-'
+C-cC-c
+
+org-structure-template-alist
+
+<q
+<e
+<s
+<i
+
+yasnippet users
+
+*** exporting
+
+C-vt
+C-ce
+
+** other obscure
+
+(setq org-confirm-babel-evaluate nil)
+(setq org-confirm-babel-evaluate t)
+
+*** org-mode mailing list
+http://www.mail-archive.com/emacs-orgmode@gnu.org/
 
 ** other stuff, check
 
-run through this with L/W/M setup + language environments + exercises... *exercises?*
+run through this with L/W/M setup + language environments + exercises...  *exercises?*
+
+we'll just write an entire paper i guess?
 
 * Abstract
 
@@ -44,24 +178,38 @@ why aren't more people using it?
 
 org-mode (and emacs, for that matter) isn't for everybody, ...
 
-but for those --- blah blah selling point
-
-carsten dominik gave a talk on org-mode at google. it was over 1 hr long. point is org mode is complex. org-babel talk can take very long too
-
 * more examples
 
 check the org paper on executing multiple code blocks with single command? by chaining maybe?
+
+** tracking finances
+
+ref: http://orgmode.org/worg/org-contrib/babel/examples/finances.html
+
+#+tblname: daily-expenses
+| Expense | Category |
+|---------+----------|
+|       2 | Food     |
+|       1 | House    |
+|      10 | Clothes  |
+|       3 | Food     |
+|       5 | House    |
+
+#+begin_src R :var tab=daily-expenses :colnames yes
+  attach(tab)
+  aggregate(Expense ~ Category, FUN=sum)
+#+end_src
+
 
 ** our current work
 
 *** nipype coding
 
-    running nipype pipeline -- where computationally intensive things should be tangled
+running nipype pipeline -- where computationally intensive things should be tangled
 
 *** paper in progress
 
     inserting subject summaries & figures
-    aside: integration with gollum = org+git+wiki
 
 ** using org-mode to learn a new programming language
 
@@ -150,6 +298,8 @@ for more, check out [[final notes, links and resources]]
 #+begin_src emacs-lisp
   (dotimes (counter 10) (insert (format "trial %s: blah\n" counter)))
 #+end_src
+
+#+results:
 
 *** use what you are familiar with
 
@@ -311,6 +461,13 @@ for USE_REGEXP in False, True:
     - overwrite default src snippet?
   - org-specific: export to beamer
 
+** other uses
+   
+   there is an org file parser for ruby called org-ruby
+
+   integration with gollum = org+git+wiki
+   https://github.com/github/gollum
+
 ** how to run code across multiple blocks in the same buffer, at once?
 
 *** example
@@ -435,17 +592,74 @@ for USE_REGEXP in False, True:
     don't have a beautiful solution yet
 
 
+** header arguments + Eric's scraps.org
+
+*** caching
+
+http://orgmode.org/manual/cache.html#cache
+
+*** eval query
+http://orgmode.org/manual/Specific-header-arguments.html#Specific-header-arguments
+
+- never :: prevents execution of the block, period.
+- query :: asks you whether you want to evaluate, regardless of your confirm-evaluate setting
+
+*** new file
+
+#+begin_src sh :sep , :file dirlisting
+  ls -l
+#+end_src
+
+#+begin_src ruby :file ruby-out
+  [[1, 2, 3, 4],
+   [2, 4, 6, 8]]
+#+end_src
+
+#+begin_src emacs-lisp :results file :results append
+  (let ((today (replace-regexp-in-string "[ \t]" "-" (current-time-string))))
+    (with-temp-file today
+      (insert (message "I'm feeling %s"
+                       (nth (random 3) (list "good" "bad" "just fine")))))
+    today)
+#+end_src
+
+from http://www.graphviz.org/Gallery/directed/fsm.gv.txt
+#+begin_src dot :file fsa.png
+  digraph finite_state_machine {
+          rankdir=LR;
+          size="8,5"
+          node [shape = doublecircle]; LR_0 LR_3 LR_4 LR_8;
+          node [shape = circle];
+          LR_0 -> LR_2 [ label = "SS(B)" ];
+          LR_0 -> LR_1 [ label = "SS(S)" ];
+          LR_1 -> LR_3 [ label = "S($end)" ];
+          LR_2 -> LR_6 [ label = "SS(b)" ];
+          LR_2 -> LR_5 [ label = "SS(a)" ];
+          LR_2 -> LR_4 [ label = "S(A)" ];
+          LR_5 -> LR_7 [ label = "S(b)" ];
+          LR_5 -> LR_5 [ label = "S(a)" ];
+          LR_6 -> LR_6 [ label = "S(b)" ];
+          LR_6 -> LR_5 [ label = "S(a)" ];
+          LR_7 -> LR_8 [ label = "S(b)" ];
+          LR_7 -> LR_5 [ label = "S(a)" ];
+          LR_8 -> LR_6 [ label = "S(b)" ];
+          LR_8 -> LR_5 [ label = "S(a)" ];
+  }
+#+end_src
+
+
 * limitations & issues
-  - debugging
-  - sudo commands from source block
+  this is an old list. bugs are being actively stamped out. some of these may no longer be bugs
+
+  - debugging; to my knowledge, std error capturing is in development. my workaround is to switch between tangled scripts, the command line, and the org buffer
+  - sudo commands (or interaction of anykind) from source block
     - ugly workaround: create a session and execute
-  - stderr output capture
-  - text indentation following a code block is messed up (it indents to match the line within the code block, treating the code line like a text line
-  - sometimes tangling causes a :PROPERTIES drawer to appear. reverting does not solve the problem. i have resorted to restarting emacs to stop it. not sure what causes it but today i got it to appear, seemingly after runnin a C-c ' on a non-src-block region, then tangle
+    - fall back on inf-process
+
 
 ** other strange behavior and or bugs
-   - not-folding correctly --> revert
-   - insert PROPERTIES after tangle, no idea how/why this happens --> revert
+   - sometimes org-mode stops folding correctly --> revert
+   - sometimes tangling causes a :PROPERTIES drawer to appear. reverting does not always solve the problem. i have resorted to restarting emacs to stop it. not sure what causes it but today i got it to appear, seemingly after runnin a C-c ' on a non-src-block region, then tangle
    - multiple tangle indentation issue -- solved in email list but doesn't look like integrated in upstream
    - clear undo tree when start org-babel buffer or if you press undo you can clear the screen?
      
@@ -469,18 +683,13 @@ for USE_REGEXP in False, True:
      this is easy to author, but what about execution? is session the way to go?
 
    - different-size headers? :: M-x customize-group org-faces, or:
-        #+begin_src emacs-lisp
-          (setq org-level-1 ((t (:inherit outline-1 :weight bold :height 1.6 :family "Verdana"))))
-          (setq org-level-2 ((t (:inherit outline-2 :height 1.5 :family "Verdana"))))
-                 
+        #+begin_src emacs-lisp :results silent
+          (custom-set-faces
+           '(org-level-1 ((t (:inherit outline-1 :weight bold :height 1.6 :family "Verdana"))))
+           '(org-level-2 ((t (:inherit outline-2 :height 1.5 :family "Verdana"))))
+           )
+          
         #+end_src
-        etc.
-        
-** key rebindings
-
-   (for relative newcomers) do not hesitate to rebind keys. depending on your workflow, the defaults may be suboptimal. doesn't seem like it at first, but 2-keystroke shortcuts can end up feeling too slow!
-
-   - 
 
 
 * final notes, links and resources
@@ -497,6 +706,8 @@ automated presentation flow controller
 ** <schedule controller>
 
 *** <start>
+# -- -- -- -- -- -- -- -- -- -- section [[<start>]] started at [2011-01-04 02:33:10]
+
 
 #+begin_src emacs-lisp
   (org-open-link-from-string "[[Abstract]]")
@@ -505,15 +716,21 @@ automated presentation flow controller
 starting without specified time uses (now)
 
 *** (+2) using relative time!!!
+# -- -- -- -- -- -- -- -- -- -- section [[(+2) using relative time!!!]] started at [2011-01-04 02:33:12]
+
 
 #+begin_src emacs-lisp
-  (org-open-link-from-string "[[Intro]]")
+  (org-open-link-from-string "[[Setting up]]")
 #+end_src
 
 *** (4) used to be absolute -- if use without plus
+# -- -- -- -- -- -- -- -- -- -- section [[(4) used to be absolute -- if use without plus]] started at [2011-01-04 02:33:14]
+# -- -- -- -- -- -- -- -- -- -- presentation ended at [2011-01-04 02:33:14]
+
+
 
 #+begin_src emacs-lisp
-  (org-open-link-from-string "[[Setup Procedure]]")
+  (org-open-link-from-string "[[quick orgmode rundown]]")
 #+end_src
 
 ** control code
@@ -594,3 +811,10 @@ starting without specified time uses (now)
             )))))
   
 #+end_src
+
+#+begin_src emacs-lisp
+  (my-org-run-presentation-schedule)
+#+end_src
+
+
+
