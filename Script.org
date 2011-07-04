@@ -1,3 +1,6 @@
+"Over and over, the successive waves of new startups with structurally more advanced operations ... are enabled due to an advance in tools. Computerized tools, unlike physical tools, can stack their leverage arbitrarily upon each other, compounding their leverage to enormously high levels."
+
+-- Yishan Wong, former director of Engineering, Facebook http://algeri-wong.com/yishan/engineering-management-tools-are-top-priority.html
 
 This is the presentation script. It will also be our example to export into a research-paper-styled document in the end.
 
@@ -12,71 +15,136 @@ This is the presentation script. It will also be our example to export into a re
         (message (format "%s" (count-matches "\\sw+"))))))
 #+end_src
 
+
+** <schedule controller>
+
+  (my-org-run-presentation-schedule)
+
 *** <start>
+
 
 Hello and welcome to this workshop about literate programming in org-mode.
 
+**** is this for me?
+
+good news is if many people get on board it'll be easier to communicate with org files.
+on the flip side, if most people really can't get used to it, tha'ts still good news, because it means that our superpowers will remain rare and valuable!
+
+ergo, win for all.
 
 
-We are going to cover...
-x y z
+**** internal wiki
+
+**** org-mode is in very active development
+
+**** Mobile-org: sync your org-files via dropbox (or whatever) and read and edit your org-files on the go
+
+- Android https://github.com/matburt/mobileorg-android/wiki/
+- iPhone http://mobileorg.ncogni.to/
 
 
 
-*** (+30) where is everybody from?
+*** (+30) survey of purpose
 
-    show of hands: who is a student, researcher, programmer, other?
-    show of hands: who is a total beginner to emacs? to org-mode? to org-babel?
+- who is a student, researcher, programmer, other?
+- who is a total beginner to emacs? to org-mode? to org-babel?
 
-
-Just for a show of hands, how many of you are
-- new to emacs
-- new to org-mode
-- new to org-babel
+**** i am here because i am dissatisfied with my current tools or workflow?
 
 
+**** want to learn about literate programming
+
+**** want to learn about programming techniques
+
+**** want to learn about org-mode and babel?
+
+**** want to learn about Emacs...?
+
+**** I'm a pro, just here for the party?
 
 Now you might be asking, why [me], why emacs, org-mode, and org-babel.
 If you are completely new to org-babel, then you've come to the right place.
 
 I discovered the org-babel project last summer, so I've only been using it for about half a year, but it's such an amazing piece of work, in a -- literally -- life-changing way, that I've become extremely enthusiastic about it. But for its incredible power it still seems relatively unknown, and that's why I'm here. And hopefully through this workshop, you will be able to find things about org-mode and org-babel that are useful and maybe even get you enthusiastic as well.
 
+*** (+10) A Mistake
+
+I made a mistake in planning out this workshop, and I'll explain these up front just so you know what to expect.
+
+I intended to cater this workshop for a general audience and preferably, people with little exposure to org-babel, literate programming, and maybe even Emacs. The problem with this concept is that:
+- if you are familiar with Emacs, it's rather unlikely that you don't know about org-mode, and consequently, org-babel, which comes with the latest version of org-mode; and further consequently, literate programming in org-babel.
+- if you are NOT familiar with Emacs, the road from setting up, to harnessing the power of literate programming in Babel is a pretty big step; the exception is linux -- but if you're using linux you're used to RTFM anyway.
+
+carsten dominik gave a talk on org-mode at google. it was over 1 hr long. point is org mode is complex. And I hope this workshop will at least ease you of the frustrations commonly attributed to these programmer-centric text editors
+
+In any case, I'm going to assume you belong to the latter group (otherwise you'll get bored real fast)
+
+*** (+10) The big step
+
+
+Setting up your environment so that you are able to utilize all of the features in org-babel turns out to be fairly non-trivial on Mac and Windows. I went through Leopard, Snow Leopard, XP, Vista, and Windows 7. It's a test of patience.
+
+My general advice is, if you are not used to setup marathons, you should grab the virtual image and boot up the ubuntu system that I have set up. Then you are guaranteed to have a working system.
+
+For those who want to set up their own systems:
+
+- If you are on a Mac without developer tools and X11, my advice is to grab the virtual image.
+- If you are on a vanilla Windows system, and are interested in the pdf export facilities, install texlive now. It may take up to an hour. But we can check out other stuff in the meantime.
+
+For those who are *determined* to set up their system:
+Now if you're confident you have the patience, right here, right now, I will have the patience to guide you through your setup.
+A forewarning to Mac users: the general advice you'll get, after installing the developer tools, is to install MacPorts. A fresh install from MacPorts can take several hours of installation!
+
+*** Three Disclaimers
+
+So before we really dive in, I have to make three disclaimers
+
+**** Disclaimer 1
+
+I am not affiliated with the developers of either program. I'm just an enthusiastic user. But Eric Schulte, one of the leads of the Babel project, is aware of this workshop though.
+
+**** Disclaimer 2
+
+org-mode has been in development for several years. Emacs has been in development for several decades. The documentation is massive. I've begun using babel in org-mode since last summer. There will be things I don't know. If you know a better way, please share the knowledge. If nobody knows, I'll be happy to find out for you.
+
+**** Disclaimer 3
+
+This workshop is scheduled to be 2.5 hours. There's no way I can fill it up with that much material. I anticipated to use about an hour of that time to make sure everyone is able to get on the same page with setting up their system. But that really doesn't make sense because if you're here and ready to dive into the deep end, I can't ask you to wait for everybody else to get changed.
+
+Therefore, after we start this hands on part, this workshop is going to lose all structure. Depending on how much attention and patience people have left I'll just continue to demonstrate how you might go about playing with your environment.
+
+*** If there are novices: the road to emacs happiness
+
+[[file:emacs-curve.org][cue the chart]]
+
+Proficiency in Emacs is all about key sequences, very much like playing the piano. If you're just starting out and are annoyed by all the key sequences, just remember that you cannot play beautiful music if you don't practice your scales.
+
 *** (+45) what is literate programming, and why org-babel
 
-Believe me, I've looked around for something that would let me write all kinds of documents as I please, and if needed, write code in it, paste images, do the laundry. Plus, I need to be able to use this at home, at work, on the go. This is the one piece of software that will let you do exactly that, minus the laundry.
+I've looked around for something that would let me write all kinds of documents as I please, and if needed, write code in it, paste images, do the laundry. Plus, I need to be able to use this at home, at work, on the go. This is the one piece of software that will let you do exactly that, minus the laundry.
 
 Indeed, the entire presentation you see on the screen now is written, and controlled from, an org-babel document.
 
+*** how will this change my workflow? (what's in it for me?)
+
+**** for students and researchers
+
+   - example of student report with reference management and rapid movement of sections
+
+   - example of paper-in-progress with figures, tables, analysis code
+
+***** current LaTeX users
 
 
+**** for programmers
 
+***** how is this different from verbose commenting?
 
-Being a relative newcomer to this package as well, and given its massive featureset, there *will* be things that you ask that I don't know the answer to, or you know a better answer. If the latter, please don't hesitate to shout out your answer, to correct me, or if nobody knows the answer, I'll hunt it down for you. (Please note that the answer hunting service only applies to questions from today's attendees during today's session!)
-
-(is there a wiki?)
-
-(is there anything on stellar?)
-
-**** what's in it for me?
-
-***** for students and researchers
-
-    - example of student report with reference management and rapid movement of sections
-
-    - example of paper-in-progress with figures, tables, analysis code
-
-****** current LaTeX users
-
-
-***** for programmers
-
-****** how is this different from verbose commenting?
-
-       the flow of thought is facilitated differently
+      the flow of thought is facilitated differently
 
 granted, I have not written a non-trivial program entirely from an org-mode buffer. But I will show you a few examples where starting from, or converting to, and org-mode version of your program is more compelling than the prevalent coding and commenting (e.g. javadoc) styles.
 
-***** literate programming
+**** literate programming
 
 You might have read or heard about literate programming ...
 
@@ -95,7 +163,7 @@ I'm almost done talking.
 **** where to put links to worg wiki?
 
 
-*** unique powers of Babel ("wow effect")
+*** unique powers of Babel
 
 **** whirlwind demo of babel
      - show a raw completed file and export it nicely
@@ -103,8 +171,6 @@ I'm almost done talking.
 **** hello world from org-babel
 
 So that was exporting. Let me show you what it means to run program code right from your document... in 10 different languages.
-
-choppr shellr
 
 ***** C
 
@@ -128,19 +194,22 @@ yes, this actually compiles and runs
 
 ***** octave
 
-#+srcname: Z_hello
+#+srcname: Z_hello(input = haskell_hello)
 #+begin_src ruby :results output
-  print "'Ch';"
+  #print "'Ch';"
+  print input.strip
 #+end_src
 
-#+src name: octave_hello(input = haskell_hello)
 
+
+#+srcname: octave_hello(input = haskell_hello)
+
+      
 #+srcname: octave_hello(input = Z_hello)
 #+begin_src octave :results output
   disp([input 'o']);
 
 #+end_src
-
 
 ***** ruby
 
@@ -151,6 +220,7 @@ yes, this actually compiles and runs
   # puts "hello world from ruby #{RUBY_VERSION}"
   print "#{input.strip}r"
 #+end_src
+
 
 ***** python
 
@@ -175,10 +245,11 @@ yes, this actually compiles and runs
 
 #+srcname: haskell_hello(input = c_hello)
 #+begin_src haskell :results output
-  putStrLn (input ++ "h")
+  putStrLn ("'" ++ input ++ "h';")
   take 1 [1..] -- currently, last line seems to get dropped in results parsing
 
 #+end_src
+
 
 ***** perl
 #+srcname: perl_hello(input = python_hello)
@@ -206,8 +277,9 @@ yes, this actually compiles and runs
   print "ChoppR shel"
 #+end_src
 
-  #+srcname: lua_hello(input = elisp_hello)
 #+srcname: lua_hello(input = zz_hello)
+
+#+srcname: lua_hello(input = elisp_hello)
 #+begin_src lua :results output
   print(input.."l")
 #+end_src
@@ -217,10 +289,7 @@ yes, this actually compiles and runs
 This workshop has three major sections (basically high level overview of IAP org file outline)
 
 - setting up your environment
-- 
-
-
-We are now at a fork in the road, and you must choose your path depending on your equipment:
+- runnin
 
 If you have (and are using):
 
@@ -228,11 +297,9 @@ If you have (and are using):
 
 **** up-to-date emacs with org-mode and org-babel installed already
      Please make sure you are running org version 7.4 =(org-version)=
-     You must be here for the party. Please help others out!
-
 
 **** up-to-date emacs
-     do you have a working TeX distribution?
+     Do you have a working TeX distribution?
 
 **** vanilla system
      check out the installation instructions
