@@ -1,0 +1,162 @@
+
+
+
+* generate all keys
+
+#+srcname: py-make_key
+#+begin_src python :results output :exports code
+  import os, uuid
+  def make_key(outfile, keytext, shifttext = ""):
+      svg = open("/home/natto/note/IAP/IAP2011/img/key.svg").read()
+      tmpfile = "%s.svg" % uuid.uuid4()
+      open(tmpfile, "w").write(svg.replace("@dn", keytext).replace("@up", shifttext))
+      os.system("convert -background none -resize x50 %s %s" % (tmpfile, outfile))
+      os.unlink(tmpfile)
+  
+  OUTDIR = "img/keyboard"
+  for ascii in range(ord('A'), ord('A') + 26):
+      ch = chr(ascii)
+      outfile = os.path.join(OUTDIR, ch+".png")
+      if not os.path.exists(outfile):
+          print "making", ch
+          #make_key(outfile, ch)
+          
+  os.chdir(OUTDIR)
+  make_key("backtick.png", "`", "~")
+  make_key("0.png", "0", "!")
+  make_key("1.png", "1", "@")
+  make_key("2.png", "2", "#")
+  make_key("3.png", "3", "$")
+  make_key("4.png", "4", "%")
+  make_key("5.png", "5", "^")
+  make_key("6.png", "6", "&amp;")
+  make_key("7.png", "7", "*")
+  make_key("8.png", "8", "(")
+  make_key("9.png", "9", ")")
+  make_key("minus.png", "-", "_")
+  make_key("equal.png", "=", "+")
+  make_key("lbracket.png", "[", "{")
+  make_key("rbracket.png", "]", "}")
+  make_key("backslash.png", "\\", "|")
+  make_key("comma.png",  ",", "&lt;")
+  make_key("period.png", ".", "&gt;")
+  make_key("slash.png",  "/", "?")
+  
+#+end_src
+
+#+results: py-make_key
+
+#+begin_src sh :results silent
+  bash
+  cd img/keyboard
+  for i in `ls *.svg`; do echo convert -background none -resize x25 $i; done
+  #for i in `ls *.svg`; do convert -background none -resize x50 $i ${i%%.svg}.png; done
+#+end_src
+
+* test images
+
+#+ATTR_LaTeX: width=1cm placement={r}{0.4\textwidth}
+[[file:img/keyboard/A.png]] [[file:img/keyboard/B.png]] [[file:img/keyboard/C.png]] [[file:img/keyboard/D.png]] [[file:img/keyboard/E.png]] [[file:img/keyboard/F.png]] [[file:img/keyboard/G.png]] [[file:img/keyboard/H.png]] [[file:img/keyboard/I.png]] [[file:img/keyboard/J.png]] [[file:img/keyboard/K.png]] [[file:img/keyboard/L.png]] [[file:img/keyboard/M.png]]
+[[file:img/keyboard/N.png]] [[file:img/keyboard/O.png]] [[file:img/keyboard/P.png]] [[file:img/keyboard/Q.png]] [[file:img/keyboard/R.png]] [[file:img/keyboard/S.png]] [[file:img/keyboard/T.png]] [[file:img/keyboard/U.png]] [[file:img/keyboard/V.png]] [[file:img/keyboard/W.png]] [[file:img/keyboard/X.png]] [[file:img/keyboard/Y.png]] [[file:img/keyboard/Z.png]]
+
+file:img/keyboard/backtick.png
+file:img/keyboard/0.png
+file:img/keyboard/1.png
+file:img/keyboard/2.png
+file:img/keyboard/3.png
+file:img/keyboard/4.png
+file:img/keyboard/5.png
+file:img/keyboard/6.png
+file:img/keyboard/7.png
+file:img/keyboard/8.png
+file:img/keyboard/9.png
+file:img/keyboard/minus.png
+file:img/keyboard/equal.png
+file:img/keyboard/lbracket.png
+file:img/keyboard/rbracket.png
+file:img/keyboard/backslash.png
+file:img/keyboard/comma.png
+file:img/keyboard/period.png
+file:img/keyboard/slash.png
+
+file:img/keyboard/ctrl.png
+file:img/keyboard/alt.png
+file:img/keyboard/super.png
+file:img/keyboard/shift.png
+file:img/keyboard/tab.png
+file:img/keyboard/space.png
+
+
+* elisp code to generate
+
+needs a hash
+default (if not in alist) = upper(ch) then direct map to png
+otherwise use alist...
+
+#+begin_src emacs-lisp
+  (defun key-to-keyimg (key-seq)
+    (mapconcat 'identity  (let ((trimmed-key (replace-regexp-in-string
+                                                      " " ""
+                                                      (replace-regexp-in-string "-" "" key-seq))))
+                                    (map 'list
+                                         (lambda (key)
+                                           (let ((use-wide-key t)
+                                                 (hs-key (make-hash-table :test 'equal)))
+                                             (dolist (pair `(("`"  . "backtick")
+                                                             ("-"  . "minus")
+                                                             ("="  . "equal")
+                                                             ("["  . "lbracket")
+                                                             ("]"  . "rbracket")
+                                                             ("\\" . "backslash")
+                                                             (","  . "comma")
+                                                             ("."  . "period")
+                                                             ("/"  . "slash")
+                                                             ("C"  . ,(if use-wide-key "ctrl"
+                                                                        "special-C"))
+                                                             ("S"  . ,(if use-wide-key "shift"
+                                                                        "special-S"))
+                                                             ("M"  . ,(if use-wide-key "alt"
+                                                                        "special-M"))))
+                                               (puthash (car pair) (cdr pair) hs-key))
+                                             (format "file:img/keyboard/%s.png" (or (gethash key hs-key) (upcase key))))
+                                           ) (split-string trimmed-key "" t)))
+                       " "))
+  
+  (insert (key-to-keyimg "C-c"))
+  
+#+end_src
+
+quitting:
+#+begin_src emacs-lisp :results value
+  (key-to-keyimg "C-x C-c")
+#+end_src
+
+#+results:
+file:img/keyboard/ctrl.png file:img/keyboard/X.png file:img/keyboard/ctrl.png file:img/keyboard/C.png
+
+
+* a table
+
+| C-f                                                | move forward a single character             |
+| C-b                                                | move backwards a single character           |
+|----------------------------------------------------+---------------------------------------------|
+| C-n                                                | move to the next line                       |
+| C-p                                                | move to the previous line                   |
+|----------------------------------------------------+---------------------------------------------|
+| C-a                                                | move to the beginning of the line           |
+| C-e                                                | move to the end of the line                 |
+|----------------------------------------------------+---------------------------------------------|
+| C-v                                                | scroll forward                              |
+| M v                                                | scroll back                                 |
+|----------------------------------------------------+---------------------------------------------|
+| RET                                                | create a newline                            |
+| C-o                                                | create a newline at the cursor position     |
+|----------------------------------------------------+---------------------------------------------|
+| C-d                                                | delete the character at the cursor position |
+| DEL                                                | delete the previous character               |
+| C-h                                                | delete the previous character               |
+| C-x C-o                                            | delete blank lines                          |
+|----------------------------------------------------+---------------------------------------------|
+| C-k                                                | delete the rest of the line (kill)          |
+| C-y                                                | yank back the text after a line delete      |
+| file:img/keyboard/ctrl.png file:img/keyboard/Y.png | yank back the text after a line delete      |
